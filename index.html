@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Tend — A Daily Companion for Moms</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fdf6f0;
+  --card:#ffffff;
+  --navy:#1c2b4a;
+  --gold:#c09a5a;
+  --rose:#c94f6d;
+  --sage:#5a9e7c;
+  --text:#2d2d2d;
+  --text2:#5a6070;
+  --border:#eae3da;
+  --cream:#fdf6f0;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  min-height:100vh;
+  min-height:100dvh;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:Georgia,'Times New Roman',serif;color:var(--navy);font-weight:700}
+h1{font-size:1.75rem;line-height:1.3}
+h2{font-size:1.25rem;margin-bottom:.5rem}
+h3{font-size:1.1rem;margin-bottom:.35rem}
+
+/* Utility */
+.hidden{display:none!important}
+button{
+  font-family:inherit;
+  cursor:pointer;
+  border:none;
+  outline:none;
+  -webkit-tap-highlight-color:transparent;
+}
+input,select,textarea{
+  font-family:inherit;
+  font-size:1rem;
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  padding:.65rem .85rem;
+  background:var(--card);
+  color:var(--text);
+  width:100%;
+  outline:none;
+  transition:border-color .2s;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+textarea{resize:vertical;min-height:90px}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6070' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .85rem center}
+
+/* Card */
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:1.1rem 1.15rem;
+  margin-bottom:.85rem;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+
+/* Primary button */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--navy);color:#fff;
+  font-size:1rem;font-weight:600;
+  padding:.8rem 1.6rem;
+  border-radius:12px;
+  width:100%;
+  transition:transform .15s,opacity .15s;
+}
+.btn:active{transform:scale(.97);opacity:.9}
+.btn-gold{background:var(--gold)}
+.btn-outline{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+.btn-sm{padding:.55rem 1rem;font-size:.9rem;width:auto}
+
+/* ===== ONBOARDING ===== */
+#onboarding{
+  position:fixed;inset:0;z-index:1000;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+}
+.ob-inner{
+  flex:1;overflow-y:auto;
+  padding:2rem 1.5rem 1.5rem;
+  display:flex;flex-direction:column;
+  max-width:440px;margin:0 auto;width:100%;
+}
+.ob-screen{display:none;flex-direction:column;flex:1}
+.ob-screen.active{display:flex}
+.ob-title{text-align:center;margin-bottom:.35rem}
+.ob-sub{text-align:center;color:var(--text2);margin-bottom:1.5rem;font-size:.95rem}
+.ob-spacer{flex:1}
+.ob-field{margin-bottom:1.15rem}
+.ob-field label{display:block;font-weight:600;margin-bottom:.4rem;color:var(--navy);font-size:.95rem}
+.ob-radio-group{display:flex;flex-direction:column;gap:.5rem}
+.ob-radio{
+  display:flex;align-items:center;gap:.6rem;
+  background:var(--card);border:1.5px solid var(--border);
+  border-radius:10px;padding:.7rem .9rem;
+  cursor:pointer;transition:border-color .2s,background .2s;
+}
+.ob-radio.selected{border-color:var(--gold);background:rgba(192,154,90,.08)}
+.ob-radio input[type="radio"]{display:none}
+.ob-radio-dot{
+  width:18px;height:18px;border-radius:50%;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:border-color .2s;
+}
+.ob-radio.selected .ob-radio-dot{border-color:var(--gold)}
+.ob-radio.selected .ob-radio-dot::after{
+  content:'';width:10px;height:10px;border-radius:50%;background:var(--gold);
+}
+.ob-week-preview{
+  text-align:center;margin-top:.75rem;padding:.6rem;
+  background:rgba(192,154,90,.1);border-radius:10px;
+  font-weight:600;color:var(--navy);font-size:.95rem;
+}
+.ob-skip{
+  text-align:center;margin-top:.75rem;
+  color:var(--text2);font-size:.85rem;
+  background:none;width:auto;display:inline;
+}
+.ob-dots{display:flex;justify-content:center;gap:6px;padding:1rem 0}
+.ob-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:background .3s}
+.ob-dot.active{background:var(--gold)}
+
+/* ===== MAIN APP ===== */
+#app{display:none;flex-direction:column;min-height:100vh;min-height:100dvh}
+#app.visible{display:flex}
+.app-content{flex:1;overflow-y:auto;padding:1.25rem 1rem 6rem;max-width:540px;margin:0 auto;width:100%}
+
+/* Tab panels */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* Bottom nav */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  display:flex;
+  padding:.4rem 0 env(safe-area-inset-bottom,.35rem);
+  z-index:100;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:.45rem 0;background:none;color:var(--text2);
+  font-size:.65rem;font-weight:600;letter-spacing:.02em;
+  position:relative;transition:color .2s;
+}
+.nav-btn.active{color:var(--gold)}
+.nav-btn.active::after{
+  content:'';position:absolute;top:0;left:25%;right:25%;
+  height:2.5px;background:var(--gold);border-radius:2px;
+}
+.nav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn.active svg{stroke-width:2.2}
+
+/* ===== TODAY TAB ===== */
+.today-header{margin-bottom:1.25rem}
+.today-greeting{font-size:1.5rem;margin-bottom:.15rem}
+.today-meta{color:var(--text2);font-size:.9rem}
+.today-baby{font-size:.92rem;color:var(--rose);margin-top:.3rem;font-weight:500}
+
+.section-title{
+  font-family:Georgia,serif;font-size:1rem;font-weight:700;
+  color:var(--navy);margin-bottom:.6rem;
+}
+.check-item{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.65rem 0;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.check-item:last-child{border-bottom:none}
+.check-box{
+  width:22px;height:22px;border-radius:6px;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:all .25s;
+}
+.check-item.done .check-box{
+  background:var(--sage);border-color:var(--sage);
+  animation:checkPop .3s ease;
+}
+@keyframes checkPop{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
+.check-box svg{width:14px;height:14px;stroke:#fff;stroke-width:2.5;fill:none;opacity:0;transition:opacity .2s}
+.check-item.done .check-box svg{opacity:1}
+.check-label{font-size:.95rem;transition:color .2s}
+.check-item.done .check-label{color:var(--text2);text-decoration:line-through;text-decoration-color:var(--border)}
+
+/* Prayer card */
+.prayer-card{
+  border-left:4px solid var(--gold);
+  background:linear-gradient(135deg,#fffcf7,#fff8f0);
+  padding:1rem 1.1rem;
+  border-radius:0 14px 14px 0;
+  margin-bottom:.85rem;
+  font-style:italic;
+  line-height:1.65;
+  color:var(--navy);
+  font-size:.95rem;
+}
+
+/* Verse card */
+.verse-card{
+  background:var(--card);
+  border-radius:14px;
+  padding:1rem 1.1rem;
+  margin-bottom:.85rem;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.verse-ref{font-weight:700;color:var(--navy);font-size:.85rem;margin-bottom:.3rem}
+.verse-text{font-style:italic;line-height:1.6;color:var(--text);font-size:.93rem}
+
+/* Encouragement */
+.encouragement-card{
+  background:linear-gradient(135deg,rgba(201,79,109,.08),rgba(192,154,90,.08));
+  border-radius:14px;padding:1rem 1.1rem;
+  font-size:.95rem;line-height:1.6;color:var(--navy);
+  font-weight:500;
+}
+
+/* ===== JOURNEY TAB ===== */
+.milestone{
+  display:flex;align-items:flex-start;gap:.7rem;
+  padding:.7rem 0;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.milestone+.milestone{border-top:1px solid var(--border)}
+.ms-dot{
+  width:20px;height:20px;border-radius:50%;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:2px;
+  transition:all .25s;
+}
+.milestone.done .ms-dot{background:var(--sage);border-color:var(--sage);animation:checkPop .3s ease}
+.ms-dot svg{width:12px;height:12px;stroke:#fff;stroke-width:2.5;fill:none;opacity:0;transition:opacity .2s}
+.milestone.done .ms-dot svg{opacity:1}
+.ms-info{flex:1}
+.ms-label{font-size:.95rem;font-weight:500}
+.milestone.done .ms-label{color:var(--text2);text-decoration:line-through;text-decoration-color:var(--border)}
+.ms-week{font-size:.78rem;color:var(--text2);margin-top:.1rem}
+
+.reflection-prompt{
+  font-style:italic;color:var(--navy);font-size:.95rem;
+  margin-bottom:.6rem;line-height:1.5;
+}
+.reflection-past{margin-top:1rem}
+.reflection-entry{
+  background:var(--cream);border-radius:10px;padding:.75rem .9rem;margin-bottom:.5rem;
+}
+.reflection-entry-week{font-size:.78rem;color:var(--gold);font-weight:700;margin-bottom:.2rem}
+.reflection-entry-text{font-size:.9rem;color:var(--text);line-height:1.5}
+
+/* ===== GUIDE TAB ===== */
+.guide-section-title{
+  font-family:Georgia,serif;font-size:1.15rem;
+  color:var(--navy);margin:1.25rem 0 .6rem;
+}
+.guide-section-title:first-child{margin-top:0}
+.guide-card{
+  background:var(--card);border-radius:14px;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+  margin-bottom:.65rem;overflow:hidden;
+}
+.guide-card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem 1rem;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.guide-card-title{font-weight:600;font-size:.95rem;color:var(--navy)}
+.guide-card-arrow{
+  width:20px;height:20px;stroke:var(--text2);fill:none;stroke-width:2;
+  transition:transform .25s;flex-shrink:0;
+}
+.guide-card.open .guide-card-arrow{transform:rotate(180deg)}
+.guide-card-body{
+  max-height:0;overflow:hidden;transition:max-height .35s ease;
+}
+.guide-card.open .guide-card-body{max-height:800px}
+.guide-card-content{
+  padding:0 1rem 1rem;font-size:.9rem;line-height:1.65;color:var(--text2);
+}
+.guide-card-content p{margin-bottom:.5rem}
+.guide-card-content p:last-child{margin-bottom:0}
+
+/* ===== SETTINGS TAB ===== */
+.settings-field{margin-bottom:1.15rem}
+.settings-field label{display:block;font-weight:600;margin-bottom:.35rem;color:var(--navy);font-size:.9rem}
+.settings-footer{text-align:center;color:var(--text2);font-size:.8rem;margin-top:2rem;padding-bottom:1rem}
+.btn-danger{background:var(--rose);margin-top:.5rem}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .35s ease}
+</style>
+</head>
+<body>
+
+<!-- ===== ONBOARDING ===== -->
+<div id="onboarding">
+  <div class="ob-inner">
+    <!-- Screen 1: Welcome -->
+    <div class="ob-screen active" data-step="1">
+      <div class="ob-spacer"></div>
+      <h1 class="ob-title" style="font-size:2rem;margin-bottom:.5rem">Welcome to Tend</h1>
+      <p class="ob-sub" style="font-size:1.05rem;max-width:300px;margin:0 auto 1.5rem">Your daily companion for pregnancy and beyond.<br><br>Built for faith-filled, natural-minded moms.</p>
+      <div class="ob-spacer"></div>
+      <button class="btn" onclick="obNext(2)">Get Started</button>
+      <button class="ob-skip" onclick="obSkip()">Skip setup</button>
+    </div>
+
+    <!-- Screen 2: About You -->
+    <div class="ob-screen" data-step="2">
+      <h1 class="ob-title">About You</h1>
+      <p class="ob-sub">Let's personalize your experience.</p>
+      <div class="ob-field">
+        <label for="obName">What should we call you?</label>
+        <input type="text" id="obName" placeholder="Your first name" autocomplete="given-name">
+      </div>
+      <div class="ob-field">
+        <label>Where are you in your journey?</label>
+        <div class="ob-radio-group">
+          <label class="ob-radio" onclick="obSelectRadio(this,'obStage','pregnant')">
+            <input type="radio" name="obStage" value="pregnant">
+            <span class="ob-radio-dot"></span>
+            <span>I am pregnant</span>
+          </label>
+          <label class="ob-radio" onclick="obSelectRadio(this,'obStage','postpartum')">
+            <input type="radio" name="obStage" value="postpartum">
+            <span class="ob-radio-dot"></span>
+            <span>I am a new mom</span>
+          </label>
+        </div>
+      </div>
+      <div class="ob-spacer"></div>
+      <button class="btn" onclick="obNext(3)">Next</button>
+    </div>
+
+    <!-- Screen 3: Pregnancy Details -->
+    <div class="ob-screen" data-step="3">
+      <h1 class="ob-title">Your Journey</h1>
+      <p class="ob-sub" id="obScreen3Sub">Tell us a little more so we can guide your days.</p>
+
+      <div id="obPregnancyFields">
+        <div class="ob-field">
+          <label>When is your due date?</label>
+          <input type="date" id="obDueDate" onchange="obCalcWeek()">
+        </div>
+        <div class="ob-field" style="text-align:center;color:var(--text2);font-size:.85rem">— or —</div>
+        <div class="ob-field">
+          <label>I know my weeks</label>
+          <input type="number" id="obWeeks" min="1" max="42" placeholder="e.g. 12" oninput="obWeekInput()">
+        </div>
+        <div class="ob-week-preview hidden" id="obWeekPreview"></div>
+      </div>
+
+      <div id="obPostpartumFields" class="hidden">
+        <div class="ob-field">
+          <label>When was your baby born?</label>
+          <input type="date" id="obBirthDate">
+        </div>
+      </div>
+
+      <div class="ob-field" style="margin-top:.75rem">
+        <label>Faith background</label>
+        <select id="obFaith">
+          <option value="christian">Christian</option>
+          <option value="jewish">Jewish</option>
+          <option value="muslim">Muslim</option>
+          <option value="spiritual">Spiritual</option>
+          <option value="secular">Secular</option>
+        </select>
+      </div>
+
+      <div class="ob-spacer"></div>
+      <button class="btn" onclick="obNext(4)">Next</button>
+    </div>
+
+    <!-- Screen 4: Approach -->
+    <div class="ob-screen" data-step="4">
+      <h1 class="ob-title">Your Approach</h1>
+      <p class="ob-sub">Everyone's journey looks different. There are no wrong answers.</p>
+      <div class="ob-field">
+        <label>Parenting style</label>
+        <select id="obStyle">
+          <option value="natural">Natural / Crunchy</option>
+          <option value="mainstream">Mainstream</option>
+          <option value="flexible">Flexible</option>
+        </select>
+      </div>
+      <div class="ob-spacer"></div>
+      <button class="btn btn-gold" onclick="obFinish()">Start My Journey</button>
+    </div>
+  </div>
+  <div class="ob-dots">
+    <span class="ob-dot active" data-dot="1"></span>
+    <span class="ob-dot" data-dot="2"></span>
+    <span class="ob-dot" data-dot="3"></span>
+    <span class="ob-dot" data-dot="4"></span>
+  </div>
+</div>
+
+<!-- ===== MAIN APP ===== -->
+<div id="app">
+  <div class="app-content">
+    <!-- TODAY -->
+    <div class="tab-panel active" id="panelToday"></div>
+    <!-- JOURNEY -->
+    <div class="tab-panel" id="panelJourney"></div>
+    <!-- GUIDE -->
+    <div class="tab-panel" id="panelGuide"></div>
+    <!-- SETTINGS -->
+    <div class="tab-panel" id="panelSettings"></div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="panelToday" onclick="switchTab('panelToday',this)">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Today</span>
+    </button>
+    <button class="nav-btn" data-tab="panelJourney" onclick="switchTab('panelJourney',this)">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span>Journey</span>
+    </button>
+    <button class="nav-btn" data-tab="panelGuide" onclick="switchTab('panelGuide',this)">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      <span>Guide</span>
+    </button>
+    <button class="nav-btn" data-tab="panelSettings" onclick="switchTab('panelSettings',this)">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      <span>Settings</span>
+    </button>
+  </nav>
+</div>
+
+<script>
+/* ========== DATA ========== */
+const BABY_SIZES = {
+  4:'a poppy seed',5:'a sesame seed',6:'a lentil',7:'a blueberry',8:'a raspberry',
+  9:'a cherry',10:'a kumquat',11:'a fig',12:'a lime 🍋',13:'a peach',14:'a lemon 🍋',
+  15:'an apple',16:'an avocado 🥑',17:'a pear',18:'a bell pepper',19:'a mango',
+  20:'a banana 🍌',21:'a carrot',22:'a papaya',23:'a grapefruit',24:'an ear of corn',
+  25:'a cauliflower',26:'a lettuce head',27:'a rutabaga',28:'an eggplant 🍆',
+  29:'a butternut squash',30:'a cabbage',31:'a coconut 🥥',32:'a jicama',
+  33:'a pineapple 🍍',34:'a cantaloupe',35:'a honeydew melon',36:'a head of romaine',
+  37:'a winter melon',38:'a leek',39:'a small watermelon 🍉',40:'a watermelon 🍉',
+  41:'a watermelon 🍉',42:'a watermelon 🍉'
+};
+
+const PRAYERS = {
+  t1:"Lord, I am holding something fragile and sacred. I can barely believe this is real. Calm my fears, steady my heart, and remind me that You knew this baby before I did. Help me trust the process even when I cannot see it.",
+  t2:"Father, thank You for the gift of feeling life. As my body changes and grows, remind me that You are the author of this story. Give me energy for the work ahead, and a heart full of gratitude for every kick, every flutter, every sign that she is here.",
+  t3:"Lord, as my body works harder each day, remind me that I was made for this. Give me rest that restores, not just sleep that passes time. As birth draws near, replace my anxiety with awe. I trust You with what is coming.",
+  pp1:"God, I am undone. And I think that might be okay. You put Yourself into a vulnerable body too. Hold me in this tenderness. Help me receive help. Remind me that being cared for is not weakness — it is grace.",
+  pp2:"Father, I am learning a new version of myself. Some days that feels like beauty. Some days it feels like loss. Thank You for meeting me in both. Give me patience for my body, kindness for my heart, and wisdom to ask for help when I need it.",
+  pp3:"Lord, I am finding my footing. Thank You for the gift of this little one, for the ways motherhood is reshaping me, and for Your faithfulness in the middle of the mess. Help me tend to myself as tenderly as I tend to her."
+};
+
+const VERSES = [
+  {ref:"Isaiah 40:31",text:"But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint."},
+  {ref:"Psalm 139:13-14",text:"For you created my inmost being; you knit me together in my mother's womb. I praise you because I am fearfully and wonderfully made."},
+  {ref:"Jeremiah 29:11",text:"For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future."},
+  {ref:"Philippians 4:13",text:"I can do all this through him who gives me strength."},
+  {ref:"Isaiah 41:10",text:"So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you."},
+  {ref:"Zephaniah 3:17",text:"The Lord your God is with you, the Mighty Warrior who saves. He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing."},
+  {ref:"Romans 8:28",text:"And we know that in all things God works for the good of those who love him, who have been called according to his purpose."},
+  {ref:"Lamentations 3:22-23",text:"Because of the Lord's great love we are not consumed, for his compassions never fail. They are new every morning; great is your faithfulness."}
+];
+
+const ENCOURAGEMENTS = {
+  t1:"The exhaustion you feel right now is your body making a brain. That's not nothing.",
+  t2:"You're in the sweet spot. Soak it in.",
+  t3:"Every day that feels hard is a day closer to meeting her.",
+  pp_early:"Three days in. Your body just did something extraordinary. Rest is not laziness — it is recovery.",
+  pp_later:"You're figuring it out, one feeding at a time. That's exactly how it's supposed to go."
+};
+
+const MILESTONES = [
+  {id:'m1',label:"Take first prenatal vitamin",week:1},
+  {id:'m2',label:"Schedule first OB/midwife appointment",week:6},
+  {id:'m3',label:"Tell your partner",week:6},
+  {id:'m4',label:"Hear the heartbeat",week:8},
+  {id:'m5',label:"First trimester complete 🎉",week:12},
+  {id:'m6',label:"Announce your pregnancy",week:12},
+  {id:'m7',label:"Feel baby move for the first time",week:18},
+  {id:'m8',label:"Anatomy scan",week:20},
+  {id:'m9',label:"Start birth plan",week:28},
+  {id:'m10',label:"Pack hospital bag",week:35},
+  {id:'m11',label:"Baby is full term 🌟",week:37},
+  {id:'m12',label:"Baby arrives! 🎉",week:42}
+];
+
+const REFLECTIONS = [
+  "What surprised you about this week?",
+  "How is your body feeling — honestly?",
+  "What are you most grateful for right now?",
+  "What are you trusting God with this week?",
+  "What does your body need more of?"
+];
+
+const GUIDE_DATA = {
+  birth:[
+    {title:"Hospital Birth",body:"<p>Hospital birth is the most common choice, and it doesn't have to mean giving up control. You can still advocate for delayed cord clamping, skin-to-skin immediately after birth, and minimal interventions.</p><p><strong>Questions to ask your OB:</strong> What is your C-section rate? How do you feel about birth plans? Can I labor in different positions? What is your policy on eating during labor?</p><p>Many hospitals now offer midwife-led units, birthing tubs, and wireless monitoring. Know your options and don't be afraid to ask for what you want.</p>"},
+    {title:"Birth Center Birth",body:"<p>Birth centers are designed to feel like home while offering trained midwifery care. They're a wonderful middle ground — less medical than a hospital, more supported than home.</p><p><strong>What to look for:</strong> Certified nurse-midwives on staff, proximity to a hospital for transfer, water birth options, postpartum support services.</p><p><strong>Pros:</strong> Lower intervention rates, more personalized care, freedom to move and eat. <strong>Cons:</strong> No epidural available on-site, must transfer for complications.</p>"},
+    {title:"Home Birth",body:"<p>Home birth is a deeply personal choice. When attended by a qualified midwife, it can be safe for low-risk pregnancies.</p><p><strong>Finding a midwife:</strong> Look for a Certified Professional Midwife (CPM) or Certified Nurse-Midwife (CNM) with home birth experience. Ask about their transfer rate and emergency protocols.</p><p><strong>Preparing your space:</strong> Waterproof covers for your bed, towels, a birth pool if desired, good lighting, and a clear path to the car just in case.</p>"},
+    {title:"Writing Your Birth Plan",body:"<p>Your birth plan is a communication tool — a way to share your wishes with your care team before labor begins.</p><p><strong>Key decisions to include:</strong> Pain management preferences, who you want in the room, immediate newborn care (skin-to-skin, delayed cord clamping, vitamin K, eye ointment), feeding intentions, and what to do if plans change.</p><p>Keep it to one page. Use clear, kind language. Remember: a birth plan is a preference list, not a contract. Flexibility is strength.</p>"}
+  ],
+  natural:[
+    {title:"Elimination Communication (EC)",body:"<p>EC is the practice of tuning into your baby's natural elimination signals and offering them a chance to go in a potty or sink instead of a diaper.</p><p><strong>When to start:</strong> From birth. Babies are born with an instinct not to soil themselves or their caregiver.</p><p><strong>Basic technique:</strong> Watch for signals — squirming, fussing, a certain look — and hold baby over a small potty or sink. Natural timing: after waking, after feeding, during diaper changes.</p><p>EC isn't about perfection. It's about building communication and connection with your baby from day one. Every catch counts.</p>"},
+    {title:"Babywearing",body:"<p>Babywearing keeps your baby close while freeing your hands. It regulates their temperature, heartbeat, and breathing. It's also deeply comforting for postpartum moms.</p><p><strong>Types of carriers:</strong> Ring slings (great for newborns), wraps (stretchy for small babies, woven for bigger ones), soft-structured carriers (for longer wear), and meh dais (a beautiful blend).</p><p><strong>Safety:</strong> Keep airways visible and clear. Baby's chin should not touch their chest. Ensure the carrier is snug and supportive.</p>"},
+    {title:"Natural Birth Prep",body:"<p><strong>Hypnobirthing:</strong> Teaches deep relaxation and positive visualization. The core idea: when you release fear, your body can birth more efficiently.</p><p><strong>Breathing techniques:</strong> Slow breath in through the nose (4 counts), long exhale through the mouth (8 counts). This activates your parasympathetic nervous system — your body's rest-and-restore mode.</p><p><strong>Perineal massage:</strong> Starting around 34 weeks, gentle massage of the perineum can help prepare the tissue for stretching during birth.</p><p><strong>Movement in labor:</strong> Walking, swaying, hands-and-knees, squatting — movement helps baby descend and can reduce pain.</p>"},
+    {title:"Postpartum Healing Foods",body:"<p>Across cultures, the postpartum period is a time for warming, nourishing foods that support healing and milk production.</p><p><strong>Bone broth:</strong> Rich in collagen, minerals, and amino acids. Sip it warm throughout the day.</p><p><strong>Warming foods:</strong> Soups, stews, cooked grains, ginger tea, dates, and healthy fats.</p><p><strong>The 40-day rest tradition:</strong> Many cultures honor a 40-day rest period after birth. The mother is cared for, fed, and allowed to do nothing but heal and bond.</p><p><strong>Prep in advance:</strong> Make and freeze bone broth, soups, lactation bites, and easy one-handed snacks in your third trimester.</p>"},
+    {title:"Non-Toxic Nursery",body:"<p>Your baby's environment matters. Small changes can make a big difference.</p><p><strong>What to avoid:</strong> Conventional crib mattresses (off-gas chemicals), synthetic fragrances, VOC-heavy paint, and plastic toys that contain phthalates.</p><p><strong>Simple swaps:</strong> Organic cotton crib sheets, a wool or natural latex mattress, low-VOC paint, beeswax candles instead of synthetic, and wooden or silicone toys.</p><p><strong>Air quality:</strong> Open windows when you can, skip plug-in air fresheners, and consider a simple HEPA air purifier.</p>"}
+  ],
+  faith:[
+    {title:"Birth as Sacred",body:"<p>Our culture often frames birth as a medical event to survive. But birth is a threshold — a crossing from one life into another. It has always been sacred.</p><p>God designed your body to do this. Not perfectly, not without pain, but with purpose. Eve's curse was not that birth would be agonizing forever — it was that the journey of bringing life into the world would cost something. And it does. But it is also the closest many women ever feel to participating in creation itself.</p><p>You are not a patient. You are a woman standing on holy ground.</p>"},
+    {title:"When Postpartum is Hard",body:"<p>The darkness after birth is real. It is not a spiritual failure. The Psalms are full of people in exactly this place — crying out to God from the pit, feeling abandoned, desperate, and undone.</p><p>Postpartum depression and anxiety are not signs that your faith is weak. They are signs that your body and brain are adjusting to something enormous. You can love God and love your baby and still feel like you are drowning.</p><p>If you are struggling: tell someone today. Your partner, your midwife, your doctor, a friend. There is no shame in this. Getting help is not giving up — it is fighting for yourself and your baby.</p>"},
+    {title:"Identity in Motherhood",body:"<p>You are a mother now. But you are also still you — the woman who existed before the test turned positive. Both of those things are true at the same time.</p><p>Motherhood will reshape your identity, but it does not have to erase it. The things you loved, the gifts you carried, the dreams you held — those are still yours. They might look different now. They might need to wait. But they are not gone.</p><p>God made you a mother, yes. But He also made you <em>you</em>. Both are gifts. Both deserve tending.</p>"},
+    {title:"Praying Through Pregnancy",body:"<p>Prayer doesn't have to be formal or long. Some of the most powerful prayers are a single breath: <em>Help me. Thank you. I trust you.</em></p><p><strong>First trimester:</strong> Anchor to Psalm 139 — God is knitting this baby together. You can trust His work even when you can't see it.</p><p><strong>Second trimester:</strong> Anchor to Isaiah 41:10 — Do not fear. He is with you. This is a season to build strength and gratitude.</p><p><strong>Third trimester:</strong> Anchor to Philippians 4:6-7 — Present your requests to God. His peace will guard your heart as birth approaches.</p><p><strong>Postpartum:</strong> Anchor to Lamentations 3:22-23 — His mercies are new every morning. Even when the nights feel endless.</p>"}
+  ]
+};
+
+/* ========== STATE ========== */
+let prefs = {};
+let currentTab = 'panelToday';
+
+function loadPrefs(){
+  try { prefs = JSON.parse(localStorage.getItem('tendPrefs')) || {}; } catch(e) { prefs = {}; }
+}
+function savePrefs(){ localStorage.setItem('tendPrefs', JSON.stringify(prefs)); }
+
+/* ========== HELPERS ========== */
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+
+function getWeek(){
+  if(prefs.stage === 'postpartum') return null;
+  if(prefs.dueDate){
+    const due = new Date(prefs.dueDate + 'T00:00:00');
+    const now = new Date();
+    const diff = (due - now) / (1000*60*60*24);
+    const w = Math.max(1, Math.min(42, Math.round(40 - diff/7)));
+    return w;
+  }
+  if(prefs.weeks) return Math.min(42, Math.max(1, parseInt(prefs.weeks)));
+  return 12; // default
+}
+
+function getPostpartumDays(){
+  if(prefs.birthDate){
+    const bd = new Date(prefs.birthDate + 'T00:00:00');
+    const now = new Date();
+    now.setHours(0,0,0,0);
+    return Math.max(0, Math.floor((now - bd)/(1000*60*60*24)));
+  }
+  return 0;
+}
+
+function isPostpartum(){ return prefs.stage === 'postpartum'; }
+
+function getTrimester(week){
+  if(week <= 12) return 1;
+  if(week <= 26) return 2;
+  return 3;
+}
+
+function getGreeting(){
+  const h = new Date().getHours();
+  if(h < 12) return 'Good morning';
+  if(h < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
+function getDayOfWeek(){
+  return new Date().toLocaleDateString('en-US',{weekday:'long'});
+}
+
+function getDateStr(){
+  return new Date().toLocaleDateString('en-US',{month:'long',day:'numeric'});
+}
+
+/* ========== ONBOARDING ========== */
+let obStep = 1;
+let obStage = '';
+
+function obSelectRadio(el, name, value){
+  document.querySelectorAll(`.ob-radio`).forEach(r => {
+    if(r.querySelector(`input[name="${name}"]`)) r.classList.remove('selected');
+  });
+  el.classList.add('selected');
+  if(name === 'obStage') obStage = value;
+}
+
+function obCalcWeek(){
+  const dd = document.getElementById('obDueDate').value;
+  if(!dd) return;
+  document.getElementById('obWeeks').value = '';
+  const due = new Date(dd + 'T00:00:00');
+  const now = new Date();
+  const diff = (due - now)/(1000*60*60*24);
+  const w = Math.max(1, Math.min(42, Math.round(40 - diff/7)));
+  const preview = document.getElementById('obWeekPreview');
+  preview.textContent = `You are in Week ${w}`;
+  preview.classList.remove('hidden');
+}
+
+function obWeekInput(){
+  const v = document.getElementById('obWeeks').value;
+  document.getElementById('obDueDate').value = '';
+  const preview = document.getElementById('obWeekPreview');
+  if(v && parseInt(v) >= 1){
+    preview.textContent = `You are in Week ${Math.min(42,parseInt(v))}`;
+    preview.classList.remove('hidden');
+  } else {
+    preview.classList.add('hidden');
+  }
+}
+
+function obNext(step){
+  // Validate step 2
+  if(obStep === 2 && !obStage){
+    return; // need to select stage
+  }
+
+  // If postpartum, adjust screen 3
+  if(step === 3){
+    if(obStage === 'postpartum'){
+      document.getElementById('obPregnancyFields').classList.add('hidden');
+      document.getElementById('obPostpartumFields').classList.remove('hidden');
+      document.getElementById('obScreen3Sub').textContent = 'When did your little one arrive?';
+    } else {
+      document.getElementById('obPregnancyFields').classList.remove('hidden');
+      document.getElementById('obPostpartumFields').classList.add('hidden');
+      document.getElementById('obScreen3Sub').textContent = 'Tell us a little more so we can guide your days.';
+    }
+  }
+
+  obStep = step;
+  document.querySelectorAll('.ob-screen').forEach(s => s.classList.remove('active'));
+  document.querySelector(`.ob-screen[data-step="${step}"]`).classList.add('active');
+  document.querySelectorAll('.ob-dot').forEach(d => d.classList.toggle('active', parseInt(d.dataset.dot) <= step));
+}
+
+function obSkip(){
+  prefs = { name:'', stage:'pregnant', faith:'christian', style:'natural' };
+  savePrefs();
+  localStorage.setItem('tendOnboardingDone','1');
+  hideOnboarding();
+}
+
+function obFinish(){
+  const name = document.getElementById('obName').value.trim();
+  const dueDate = document.getElementById('obDueDate').value;
+  const weeks = document.getElementById('obWeeks').value;
+  const birthDate = document.getElementById('obBirthDate').value;
+  const faith = document.getElementById('obFaith').value;
+  const style = document.getElementById('obStyle').value;
+
+  prefs = {
+    name: name,
+    stage: obStage || 'pregnant',
+    dueDate: dueDate || '',
+    weeks: weeks ? parseInt(weeks) : null,
+    birthDate: birthDate || '',
+    faith: faith,
+    style: style
+  };
+  savePrefs();
+  localStorage.setItem('tendOnboardingDone','1');
+  hideOnboarding();
+}
+
+function hideOnboarding(){
+  document.getElementById('onboarding').classList.add('hidden');
+  document.getElementById('app').classList.add('visible');
+  renderAll();
+}
+
+/* ========== TAB SWITCHING ========== */
+function switchTab(tabId, btn){
+  currentTab = tabId;
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  // Re-render the active tab
+  if(tabId === 'panelToday') renderToday();
+  else if(tabId === 'panelJourney') renderJourney();
+  else if(tabId === 'panelGuide') renderGuide();
+  else if(tabId === 'panelSettings') renderSettings();
+}
+
+/* ========== RENDER: TODAY ========== */
+function renderToday(){
+  const pp = isPostpartum();
+  const week = getWeek();
+  const ppDays = pp ? getPostpartumDays() : 0;
+  const name = prefs.name || '';
+  const greeting = getGreeting();
+  const displayName = name ? `, ${name}` : ' 🌸';
+
+  let metaLine = '';
+  let babyLine = '';
+
+  if(pp){
+    const ppWeeks = Math.floor(ppDays / 7);
+    const ppRemDays = ppDays % 7;
+    if(ppDays <= 7){
+      metaLine = `Day ${ppDays} postpartum · ${getDayOfWeek()}, ${getDateStr()}`;
+    } else {
+      metaLine = `Week ${ppWeeks}, Day ${ppRemDays} postpartum · ${getDayOfWeek()}, ${getDateStr()}`;
+    }
+    if(ppDays === 0) babyLine = 'Your baby is here! Welcome to the other side. 🌸';
+    else if(ppDays === 1) babyLine = 'Your baby is 1 day old 🌸';
+    else if(ppDays < 7) babyLine = `Your baby is ${ppDays} days old 🌸`;
+    else if(ppWeeks === 1) babyLine = `Your baby is 1 week old 🌸`;
+    else babyLine = `Your baby is ${ppWeeks} weeks old 🌸`;
+  } else {
+    metaLine = `Week ${week} · ${getDayOfWeek()}, ${getDateStr()}`;
+    const size = BABY_SIZES[week];
+    if(size) babyLine = `Your baby is about the size of ${size}`;
+  }
+
+  // Determine checks for today
+  const dateKey = todayStr();
+  let checks;
+  if(pp){
+    checks = [
+      {id:'vitamin', label:'Prenatal vitamin'},
+      {id:'water', label:'Water goal — 80oz'},
+      {id:'protein', label:'Protein goal — 75g'},
+      {id:'peri', label:'Peri bottle rinse ×3'},
+      {id:'rest', label:'Rest — lie down even briefly'},
+      {id:'help', label:'Let someone else hold baby 20 min'}
+    ];
+  } else {
+    checks = [
+      {id:'vitamin', label:'Prenatal vitamin'},
+      {id:'water', label:'Water goal — 80oz'},
+      {id:'protein', label:'Protein goal — 75g'}
+    ];
+  }
+
+  let checksState = {};
+  try { checksState = JSON.parse(localStorage.getItem(`tend_checks_${dateKey}`)) || {}; } catch(e){}
+
+  // Prayer
+  let prayer = '';
+  if(pp){
+    if(ppDays <= 14) prayer = PRAYERS.pp1;
+    else if(ppDays <= 42) prayer = PRAYERS.pp2;
+    else prayer = PRAYERS.pp3;
+  } else {
+    const tri = getTrimester(week);
+    if(tri === 1) prayer = PRAYERS.t1;
+    else if(tri === 2) prayer = PRAYERS.t2;
+    else prayer = PRAYERS.t3;
+  }
+
+  // Verse
+  const verseIdx = (pp ? ppDays : (week || 1)) % 8;
+  const verse = VERSES[verseIdx];
+
+  // Encouragement
+  let enc = '';
+  if(pp){
+    enc = ppDays <= 14 ? ENCOURAGEMENTS.pp_early : ENCOURAGEMENTS.pp_later;
+  } else {
+    const tri = getTrimester(week);
+    if(tri === 1) enc = ENCOURAGEMENTS.t1;
+    else if(tri === 2) enc = ENCOURAGEMENTS.t2;
+    else enc = ENCOURAGEMENTS.t3;
+  }
+
+  // Movement check
+  const movementChecked = checksState['movement'] ? 'done' : '';
+
+  let checksHTML = checks.map(c => {
+    const done = checksState[c.id] ? 'done' : '';
+    return `<div class="check-item ${done}" onclick="toggleCheck('${c.id}')">
+      <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span class="check-label">${c.label}</span>
+    </div>`;
+  }).join('');
+
+  const html = `
+    <div class="today-header fade-in">
+      <h1 class="today-greeting">${greeting}${displayName}</h1>
+      <div class="today-meta">${metaLine}</div>
+      ${babyLine ? `<div class="today-baby">${babyLine}</div>` : ''}
+    </div>
+
+    <div class="card fade-in">
+      <div class="section-title">Daily Nourishment 🌿</div>
+      ${checksHTML}
+    </div>
+
+    <div class="card fade-in">
+      <div class="section-title">Movement 🤸</div>
+      <div class="check-item ${movementChecked}" onclick="toggleCheck('movement')">
+        <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <span class="check-label">Movement today (pelvic tilts, walk, or stretching)</span>
+      </div>
+    </div>
+
+    <div class="section-title fade-in" style="margin-top:.25rem">Today's Prayer 🙏</div>
+    <div class="prayer-card fade-in">${prayer}</div>
+
+    <div class="section-title fade-in">Today's Verse 📖</div>
+    <div class="verse-card fade-in">
+      <div class="verse-ref">${verse.ref}</div>
+      <div class="verse-text">"${verse.text}"</div>
+    </div>
+
+    <div class="section-title fade-in">Today's Encouragement ✨</div>
+    <div class="encouragement-card fade-in">${enc}</div>
+  `;
+
+  document.getElementById('panelToday').innerHTML = html;
+}
+
+function toggleCheck(id){
+  const dateKey = todayStr();
+  let checksState = {};
+  try { checksState = JSON.parse(localStorage.getItem(`tend_checks_${dateKey}`)) || {}; } catch(e){}
+  checksState[id] = !checksState[id];
+  localStorage.setItem(`tend_checks_${dateKey}`, JSON.stringify(checksState));
+  renderToday();
+}
+
+/* ========== RENDER: JOURNEY ========== */
+function renderJourney(){
+  const pp = isPostpartum();
+  const week = getWeek() || 1;
+
+  // Milestones
+  let msHTML = MILESTONES.map(m => {
+    const done = localStorage.getItem(`tend_milestone_${m.id}`) === '1';
+    const weekLabel = m.week >= 42 ? 'Birth' : `Week ${m.week}`;
+    return `<div class="milestone ${done ? 'done' : ''}" onclick="toggleMilestone('${m.id}')">
+      <div class="ms-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <div class="ms-info">
+        <div class="ms-label">${m.label}</div>
+        <div class="ms-week">${weekLabel}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Reflection
+  const reflectionWeek = pp ? Math.floor(getPostpartumDays() / 7) : week;
+  const promptIdx = reflectionWeek % REFLECTIONS.length;
+  const prompt = REFLECTIONS[promptIdx];
+  const reflKey = `tend_reflection_week_${reflectionWeek}`;
+  const savedReflection = localStorage.getItem(reflKey) || '';
+
+  // Past reflections
+  let pastHTML = '';
+  let pastCount = 0;
+  for(let w = reflectionWeek - 1; w >= 0 && pastCount < 3; w--){
+    const val = localStorage.getItem(`tend_reflection_week_${w}`);
+    if(val){
+      const weekLabel = pp ? `Postpartum Week ${w}` : `Week ${w}`;
+      pastHTML += `<div class="reflection-entry">
+        <div class="reflection-entry-week">${weekLabel}</div>
+        <div class="reflection-entry-text">${escapeHtml(val)}</div>
+      </div>`;
+      pastCount++;
+    }
+  }
+
+  const weekLabel = pp ? 'This Week' : `Week ${week}`;
+
+  const html = `
+    <h2 class="fade-in" style="margin-bottom:.75rem">Milestones</h2>
+    <div class="card fade-in">
+      ${msHTML}
+    </div>
+
+    <h2 class="fade-in" style="margin-top:1.25rem;margin-bottom:.6rem">Weekly Reflection</h2>
+    <div class="card fade-in">
+      <div class="reflection-prompt">"${prompt}"</div>
+      <textarea id="reflectionTextarea" placeholder="Write your thoughts..." oninput="saveReflection('${reflKey}',this.value)">${escapeHtml(savedReflection)}</textarea>
+      ${pastHTML ? `<div class="reflection-past"><div style="font-size:.8rem;color:var(--text2);font-weight:600;margin-bottom:.4rem">Previous reflections</div>${pastHTML}</div>` : ''}
+    </div>
+  `;
+
+  document.getElementById('panelJourney').innerHTML = html;
+}
+
+function toggleMilestone(id){
+  const key = `tend_milestone_${id}`;
+  const current = localStorage.getItem(key) === '1';
+  localStorage.setItem(key, current ? '0' : '1');
+  renderJourney();
+}
+
+function saveReflection(key, val){
+  localStorage.setItem(key, val);
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* ========== RENDER: GUIDE ========== */
+function renderGuide(){
+  function renderSection(title, items){
+    let cards = items.map((item, i) => `
+      <div class="guide-card" id="gc_${title}_${i}">
+        <div class="guide-card-header" onclick="toggleGuideCard('gc_${title}_${i}')">
+          <span class="guide-card-title">${item.title}</span>
+          <svg class="guide-card-arrow" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="guide-card-body">
+          <div class="guide-card-content">${item.body}</div>
+        </div>
+      </div>
+    `).join('');
+    return `<div class="guide-section-title">${title}</div>${cards}`;
+  }
+
+  const html = `
+    ${renderSection('Birth Your Way 🌊', GUIDE_DATA.birth)}
+    ${renderSection('Natural Living 🌿', GUIDE_DATA.natural)}
+    ${renderSection('Faith & Motherhood ✝️', GUIDE_DATA.faith)}
+  `;
+
+  document.getElementById('panelGuide').innerHTML = html;
+}
+
+function toggleGuideCard(id){
+  document.getElementById(id).classList.toggle('open');
+}
+
+/* ========== RENDER: SETTINGS ========== */
+function renderSettings(){
+  const html = `
+    <h2 class="fade-in" style="margin-bottom:1rem">Settings</h2>
+
+    <div class="card fade-in">
+      <div class="settings-field">
+        <label for="setName">Name</label>
+        <input type="text" id="setName" value="${escapeHtml(prefs.name || '')}" oninput="updatePref('name',this.value)">
+      </div>
+
+      <div class="settings-field">
+        <label>Journey stage</label>
+        <div style="display:flex;gap:.5rem">
+          <button class="btn btn-sm ${prefs.stage !== 'postpartum' ? '' : 'btn-outline'}" onclick="updatePref('stage','pregnant');renderSettings();renderToday()">Pregnant</button>
+          <button class="btn btn-sm ${prefs.stage === 'postpartum' ? '' : 'btn-outline'}" onclick="updatePref('stage','postpartum');renderSettings();renderToday()">New Mom</button>
+        </div>
+      </div>
+
+      ${prefs.stage !== 'postpartum' ? `
+      <div class="settings-field">
+        <label for="setDue">Due date</label>
+        <input type="date" id="setDue" value="${prefs.dueDate || ''}" onchange="updatePref('dueDate',this.value);renderToday()">
+      </div>
+      ` : `
+      <div class="settings-field">
+        <label for="setBirth">Baby's birth date</label>
+        <input type="date" id="setBirth" value="${prefs.birthDate || ''}" onchange="updatePref('birthDate',this.value);renderToday()">
+      </div>
+      `}
+
+      <div class="settings-field">
+        <label for="setFaith">Faith background</label>
+        <select id="setFaith" onchange="updatePref('faith',this.value)">
+          <option value="christian" ${prefs.faith==='christian'?'selected':''}>Christian</option>
+          <option value="jewish" ${prefs.faith==='jewish'?'selected':''}>Jewish</option>
+          <option value="muslim" ${prefs.faith==='muslim'?'selected':''}>Muslim</option>
+          <option value="spiritual" ${prefs.faith==='spiritual'?'selected':''}>Spiritual</option>
+          <option value="secular" ${prefs.faith==='secular'?'selected':''}>Secular</option>
+        </select>
+      </div>
+
+      <div class="settings-field">
+        <label for="setStyle">Parenting style</label>
+        <select id="setStyle" onchange="updatePref('style',this.value)">
+          <option value="natural" ${prefs.style==='natural'?'selected':''}>Natural / Crunchy</option>
+          <option value="mainstream" ${prefs.style==='mainstream'?'selected':''}>Mainstream</option>
+          <option value="flexible" ${prefs.style==='flexible'?'selected':''}>Flexible</option>
+        </select>
+      </div>
+
+      <button class="btn btn-danger" onclick="resetApp()">Reset App</button>
+    </div>
+
+    <div class="settings-footer">Tend v1.0 · Made with 🖤</div>
+  `;
+
+  document.getElementById('panelSettings').innerHTML = html;
+}
+
+function updatePref(key, val){
+  prefs[key] = val;
+  savePrefs();
+}
+
+function resetApp(){
+  if(confirm('Are you sure you want to reset Tend? All your data will be lost.')){
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+/* ========== RENDER ALL ========== */
+function renderAll(){
+  renderToday();
+  renderJourney();
+  renderGuide();
+  renderSettings();
+}
+
+/* ========== INIT ========== */
+function init(){
+  loadPrefs();
+  const done = localStorage.getItem('tendOnboardingDone');
+  if(done){
+    document.getElementById('onboarding').classList.add('hidden');
+    document.getElementById('app').classList.add('visible');
+    renderAll();
+  }
+}
+
+init();
+</script>
+</body>
+</html>
