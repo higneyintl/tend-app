@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Tend — Today Tab (Week 1 Daily Mockup)</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fdf6f0;
+  --card:#ffffff;
+  --navy:#1c2b4a;
+  --gold:#c09a5a;
+  --rose:#c94f6d;
+  --sage:#5a9e7c;
+  --text:#2d2d2d;
+  --text2:#5a6070;
+  --border:#eae3da;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  min-height:100vh;
+  max-width:440px;
+  margin:0 auto;
+}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;color:var(--navy);font-weight:700}
+h1{font-size:1.6rem;line-height:1.3}
+
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:1.1rem 1.15rem;
+  margin-bottom:.85rem;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+
+/* Day nav */
+.day-nav{
+  position:sticky;top:0;z-index:50;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+  padding:.5rem 1rem;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:.5rem;
+}
+.day-nav-label{
+  font-family:Georgia,serif;font-size:1rem;font-weight:700;color:var(--navy);
+  text-align:center;flex:1;
+}
+.day-nav-btn{
+  background:var(--navy);color:#fff;border:none;border-radius:8px;
+  padding:.4rem .8rem;font-size:.85rem;font-weight:600;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.day-nav-btn:disabled{background:var(--border);color:var(--text2);cursor:default}
+
+/* Label pill for weekly vs daily */
+.pill{
+  display:inline-block;
+  font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:.2rem .55rem;border-radius:20px;margin-bottom:.6rem;
+}
+.pill-weekly{background:rgba(192,154,90,.15);color:var(--gold)}
+.pill-daily{background:rgba(90,158,124,.12);color:var(--sage)}
+
+/* Content */
+.content{padding:1.1rem 1rem 5rem}
+
+.today-greeting{font-size:1.45rem;margin-bottom:.15rem}
+.today-meta{color:var(--text2);font-size:.88rem;margin-bottom:.2rem}
+.today-baby{font-size:.9rem;color:var(--rose);font-weight:500;margin-bottom:1.1rem}
+
+.section-title{
+  font-family:Georgia,serif;font-size:.95rem;font-weight:700;
+  color:var(--navy);margin-bottom:.6rem;
+}
+
+/* Checks */
+.check-item{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.6rem 0;border-bottom:1px solid var(--border);cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.check-item:last-child{border-bottom:none}
+.check-box{
+  width:22px;height:22px;border-radius:6px;
+  border:2px solid var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s;
+}
+.check-item.done .check-box{background:var(--sage);border-color:var(--sage)}
+.check-box svg{width:13px;height:13px;stroke:#fff;stroke-width:2.5;fill:none;opacity:0;transition:opacity .2s}
+.check-item.done .check-box svg{opacity:1}
+.check-label{font-size:.92rem}
+
+/* Prayer */
+.prayer-card{
+  background:linear-gradient(135deg,rgba(28,43,74,.04),rgba(192,154,90,.06));
+  border:1px solid rgba(192,154,90,.2);
+  border-radius:14px;
+  padding:1.1rem 1.15rem;
+  font-size:.93rem;line-height:1.75;
+  color:var(--text);
+  margin-bottom:.85rem;
+  font-style:italic;
+}
+
+/* Verse */
+.verse-card{
+  background:var(--card);border-radius:14px;
+  padding:1.1rem 1.15rem;margin-bottom:.85rem;
+  border-left:3.5px solid var(--gold);
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.verse-ref{font-weight:700;font-size:.8rem;color:var(--gold);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.3rem}
+.verse-text{font-family:Georgia,serif;font-size:1rem;line-height:1.65;color:var(--navy);font-style:italic}
+
+/* Encouragement */
+.enc-card{
+  background:rgba(201,79,109,.06);
+  border-radius:14px;padding:1.1rem 1.15rem;margin-bottom:.85rem;
+  font-size:.93rem;line-height:1.7;color:var(--text);
+}
+
+/* Weekly anchor */
+.weekly-anchor{
+  background:var(--card);border-radius:14px;padding:1.1rem 1.15rem;
+  margin-bottom:.85rem;box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.anchor-dev{font-size:.9rem;line-height:1.7;color:var(--text);margin-bottom:.75rem}
+.anchor-meta{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.anchor-size{font-size:.85rem;color:var(--text2);font-style:italic}
+.anchor-tip{
+  background:rgba(90,158,124,.08);border-radius:10px;
+  padding:.7rem .85rem;font-size:.87rem;line-height:1.65;color:var(--text2);
+  margin-top:.6rem;
+}
+.anchor-tip strong{color:var(--sage);display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:.2rem}
+
+.milestone-list{list-style:none;margin-top:.4rem}
+.milestone-list li{
+  font-size:.87rem;color:var(--text2);padding:.2rem 0;
+  display:flex;align-items:center;gap:.5rem;
+}
+.milestone-list li::before{content:'✦';color:var(--gold);font-size:.65rem}
+
+/* Bottom nav stub */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;max-width:440px;margin:0 auto;
+  background:var(--card);border-top:1px solid var(--border);
+  display:flex;padding:.4rem 0 .5rem;z-index:100;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:.4rem 0;background:none;border:none;cursor:pointer;
+  color:var(--text2);font-size:.6rem;font-weight:600;letter-spacing:.02em;
+}
+.nav-btn.active{color:var(--gold)}
+.nav-btn svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+</style>
+</head>
+<body>
+
+<!-- Day navigation bar -->
+<div class="day-nav">
+  <button class="day-nav-btn" id="prevBtn" onclick="changeDay(-1)" disabled>← Prev</button>
+  <div class="day-nav-label" id="dayLabel">Week 1 · Day 1</div>
+  <button class="day-nav-btn" id="nextBtn" onclick="changeDay(1)">Next →</button>
+</div>
+
+<!-- Main content -->
+<div class="content" id="mainContent"></div>
+
+<!-- Bottom nav stub -->
+<nav class="bottom-nav">
+  <button class="nav-btn active">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Today
+  </button>
+  <button class="nav-btn">
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Journey
+  </button>
+  <button class="nav-btn">
+    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    Guide
+  </button>
+  <button class="nav-btn">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    Settings
+  </button>
+</nav>
+
+<script>
+let currentDay = 1;
+const totalDays = 7;
+
+const checks = [
+  { id:'water', label:'💧 Water — 80oz' },
+  { id:'nourish', label:'🥗 Nourishment' },
+  { id:'rest', label:'🌙 Rest' },
+  { id:'spirit', label:'🙏 Spirit check' }
+];
+
+const days = [
+  {
+    day: 1,
+    title: "I Do Not Even Know Yet",
+    prayer: `Lord, I do not even know yet what You are doing inside me. My body is moving through its ordinary rhythm, but You are never ordinary, and nothing You set in motion is accidental. I ask You to prepare me — my womb, my heart, my spirit — for whatever You have planned. If there is a life about to begin, hold it already. Hold me already. I trust that Your timing is perfect even when I cannot see what is coming. Amen.`,
+    encouragement: `Hey. You might not even be thinking about pregnancy right now, and that is completely fine. But your body is doing its faithful, quiet work — the kind it has done a hundred times before. If this is the cycle that changes everything, how beautiful that it started so gently, so normally, so hidden. God loves to begin His greatest stories in whispers.`
+  },
+  {
+    day: 2,
+    title: "Your Body Knows What to Do",
+    prayer: `Father, I confess I have a habit of trying to manage things that are entirely in Your hands. Today I am choosing to release my grip on outcomes. My body knows what to do — You built it this way. My spirit knows who to trust — You have been faithful. Help me rest in that today. Not striving. Not calculating. Just being in my life, held by a God who holds everything. Amen.`,
+    encouragement: `Your body knows what to do. I know that sounds simple, but sometimes simple is exactly what we need to hear. You do not need to perform anything. You do not need to optimize everything. Your body has been practicing this rhythm your whole life, and right now it is doing its thing with quiet, astonishing competence. Just be in your life today. That is enough.`
+  },
+  {
+    day: 3,
+    title: "Ordinary Days, Sacred Work",
+    prayer: `God, I walked through today like any other day. Made coffee. Answered emails. Did the ordinary things. But I keep thinking — the most extraordinary things in Scripture started on ordinary days. Mary was just going about her life. So was Hannah. So was Elizabeth. If You are moving in this season, I want to be present enough to notice. Open my eyes to the sacred in the everyday. Amen.`,
+    encouragement: `The most important things happening in your body right now are completely invisible. You cannot feel them, monitor them, or speed them up. They are just happening — quietly, faithfully, on schedule. There is something deeply comforting about that. Not everything that matters is loud. Not everything God is doing needs your attention to get done.`
+  },
+  {
+    day: 4,
+    title: "Permission to Rest",
+    prayer: `Lord, I am tired and I am not even sure why. My body is doing something, even if I cannot name it yet. I ask You for permission to slow down today — not because I am lazy, but because rest is not the enemy of productivity, it is the soil of it. You rested on the seventh day not because You were depleted, but because rest is sacred. Teach me to receive it without guilt. Amen.`,
+    encouragement: `Here is your permission slip: rest today. Seriously. Sleep an extra hour. Sit with your tea instead of rushing through it. Your body is doing quiet, invisible work right now, and rest is not a reward for being productive enough — it is part of the process. You are not behind. You are not missing anything. The work is happening while you sleep.`
+  },
+  {
+    day: 5,
+    title: "Leaning Into Anticipation",
+    prayer: `Father, I notice something stirring in me today — a kind of hopeful restlessness. I think it is anticipation, and I am not sure what to do with it. I do not want to manufacture hope I do not feel, or suppress hope that is quietly rising. So I just bring it to You as it is. Whatever is beginning — or not beginning — in this season, I trust Your hand in it. Hope is not naive when it is anchored in You. Amen.`,
+    encouragement: `There is nothing wrong with wanting this. The longing you feel — for a child, for this season to unfold, for the story that is still being written — that longing is not weakness or impatience. It is love, already reaching toward someone who does not exist yet in the world but already exists in the heart of God. That kind of love is worth leaning into.`
+  },
+  {
+    day: 6,
+    title: "Gratitude for This Body",
+    prayer: `God, I do not always love my body. I want to be honest with You about that. I pick it apart more than I praise it. But today I want to try to see what You see — a body that breathes, that moves, that heals, that functions in ten thousand ways I never even notice. A body that could carry a child. Help me receive it as the gift it is, even on the days it does not feel like one. Amen.`,
+    encouragement: `Your body is doing something remarkable right now, and it is not asking for your gratitude to keep going. But gratitude changes you — it softens the critical inner voice and opens up a little more space for wonder. So today, just one thing: look at your hands, or feel your heartbeat, or take one slow deep breath, and say thank you. Your body has shown up for you every single day of your life. That is not nothing.`
+  },
+  {
+    day: 7,
+    title: "One Week Closer",
+    prayer: `Lord, a week has passed. I do not know exactly what it held for me physically — whether something has begun, or whether the waiting continues. Either way, I am still here. Still trusting. Still choosing to believe that You are good and Your plans for me are good. That feels like something worth marking. Thank You for this week, even the ordinary parts of it. Even the quiet. Especially the quiet. Amen.`,
+    encouragement: `You made it through another week — and that week was not wasted, even if it felt unremarkable. Time is not your enemy. God is not running late. The story you are living is unfolding at exactly the pace it needs to. Rest in that today. Tomorrow is a new week, and whatever it holds, you will not walk into it alone.`
+  }
+];
+
+const weeklyAnchor = {
+  dev: `Your body is preparing the lining of your womb like soil being tilled before a seed is planted. This week is counted from the first day of your last period — the work has begun even before conception, and it is holy.`,
+  size: `✦ Not yet measurable — a whispered promise`,
+  scripture: { ref: `Jeremiah 1:5 (NIV)`, text: `Before I formed you in the womb I knew you, before you were born I set you apart.` },
+  milestones: [`Uterine lining begins to build and thicken`, `Hormonal signals prepare for ovulation`, `The body's faithful monthly rhythm continues`],
+  tip: `If you are hoping to conceive, nourish your body with whole foods rich in folate — dark leafy greens, lentils, avocados, citrus. Think of it as preparing good soil: you are giving your body the nutrients it may soon need in abundance.`
+};
+
+let checkState = {};
+
+function toggleCheck(id) {
+  checkState[id] = !checkState[id];
+  render();
+}
+
+function render() {
+  const d = days[currentDay - 1];
+
+  let checksHTML = checks.map(c => {
+    const done = checkState[c.id] ? 'done' : '';
+    return `<div class="check-item ${done}" onclick="toggleCheck('${c.id}')">
+      <div class="check-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <span class="check-label">${c.label}</span>
+    </div>`;
+  }).join('');
+
+  let milestonesHTML = weeklyAnchor.milestones.map(m => `<li>${m}</li>`).join('');
+
+  document.getElementById('mainContent').innerHTML = `
+
+    <!-- Header -->
+    <div style="margin-bottom:1.1rem">
+      <h1 class="today-greeting">Good morning, Shameen 🌸</h1>
+      <div class="today-meta">Week 1 · Day ${currentDay} · ${['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][currentDay-1]}</div>
+      <div class="today-baby">Your baby is a whispered promise ✨</div>
+    </div>
+
+    <!-- Daily Checks -->
+    <div class="section-title">Daily Nourishment 🌿</div>
+    <div class="card" style="margin-bottom:.85rem">${checksHTML}</div>
+
+    <!-- TODAY'S PRAYER (changes daily) -->
+    <div class="section-title">Today's Prayer 🙏</div>
+    <div style="margin-bottom:.3rem"><span class="pill pill-daily">Daily — changes each day</span></div>
+    <div class="prayer-card">${d.prayer}</div>
+
+    <!-- TODAY'S VERSE (weekly scripture, shown daily) -->
+    <div class="section-title">Today's Verse 📖</div>
+    <div class="verse-card">
+      <div class="verse-ref">${weeklyAnchor.scripture.ref}</div>
+      <div class="verse-text">"${weeklyAnchor.scripture.text}"</div>
+    </div>
+
+    <!-- TODAY'S ENCOURAGEMENT (changes daily) -->
+    <div class="section-title">Today's Encouragement ✨</div>
+    <div style="margin-bottom:.3rem"><span class="pill pill-daily">Daily — changes each day</span></div>
+    <div class="enc-card">${d.encouragement}</div>
+
+    <!-- WEEKLY ANCHOR (same all week) -->
+    <div class="section-title" style="margin-top:.5rem">This Week 📅</div>
+    <div style="margin-bottom:.3rem"><span class="pill pill-weekly">Weekly — same all week</span></div>
+    <div class="weekly-anchor">
+      <div class="anchor-dev">${weeklyAnchor.dev}</div>
+      <div class="anchor-size" style="margin-bottom:.55rem">${weeklyAnchor.size}</div>
+      <div style="font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.04em">Milestones</div>
+      <ul class="milestone-list">${milestonesHTML}</ul>
+      <div class="anchor-tip">
+        <strong>🌿 Education Tip</strong>
+        ${weeklyAnchor.tip}
+      </div>
+    </div>
+
+  `;
+
+  // Update nav
+  document.getElementById('dayLabel').textContent = `Week 1 · Day ${currentDay}`;
+  document.getElementById('prevBtn').disabled = currentDay <= 1;
+  document.getElementById('nextBtn').disabled = currentDay >= totalDays;
+}
+
+function changeDay(delta) {
+  currentDay = Math.max(1, Math.min(totalDays, currentDay + delta));
+  checkState = {};
+  render();
+  window.scrollTo(0, 0);
+}
+
+render();
+</script>
+</body>
+</html>
