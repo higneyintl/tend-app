@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Tend — My Journey Tab (Mockup)</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fdf6f0;
+  --card:#ffffff;
+  --navy:#1c2b4a;
+  --gold:#c09a5a;
+  --rose:#c94f6d;
+  --sage:#5a9e7c;
+  --text:#2d2d2d;
+  --text2:#5a6070;
+  --border:#eae3da;
+  --lavender:#7c6fa0;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;
+  min-height:100vh;max-width:440px;margin:0 auto;
+}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;color:var(--navy);font-weight:700}
+h2{font-size:1.2rem;margin-bottom:.65rem}
+h3{font-size:1rem;margin-bottom:.4rem}
+
+.card{
+  background:var(--card);border-radius:14px;
+  padding:1.1rem 1.15rem;margin-bottom:.85rem;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+
+/* Section tabs inside Journey */
+.seg-tabs{
+  display:flex;gap:.4rem;margin-bottom:1.1rem;
+  background:rgba(28,43,74,.06);border-radius:12px;padding:.3rem;
+}
+.seg-tab{
+  flex:1;padding:.45rem .3rem;border:none;border-radius:9px;
+  font-size:.78rem;font-weight:700;letter-spacing:.02em;
+  background:transparent;color:var(--text2);cursor:pointer;
+  transition:all .2s;-webkit-tap-highlight-color:transparent;
+}
+.seg-tab.active{background:var(--card);color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.1)}
+
+/* Panels */
+.panel{display:none}
+.panel.active{display:block}
+
+/* Reflection */
+.reflection-prompt{
+  font-family:Georgia,serif;font-size:1rem;font-style:italic;
+  color:var(--navy);margin-bottom:.75rem;line-height:1.6;
+}
+.reflection-prompt span{color:var(--gold);font-weight:700;font-style:normal}
+textarea{
+  font-family:inherit;font-size:.92rem;
+  border:1.5px solid var(--border);border-radius:10px;
+  padding:.7rem .85rem;background:var(--bg);color:var(--text);
+  width:100%;outline:none;resize:none;min-height:120px;line-height:1.65;
+  transition:border-color .2s;
+}
+textarea:focus{border-color:var(--gold)}
+.char-count{text-align:right;font-size:.75rem;color:var(--text2);margin-top:.3rem}
+
+/* Past entries */
+.past-entry{
+  border-top:1px solid var(--border);padding-top:.8rem;margin-top:.8rem;
+}
+.past-week-label{font-size:.75rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.3rem}
+.past-text{font-size:.88rem;color:var(--text2);line-height:1.6;font-style:italic}
+
+/* Mood */
+.mood-row{display:flex;justify-content:space-between;gap:.3rem;margin-bottom:.5rem}
+.mood-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:.2rem;
+  padding:.55rem .2rem;border-radius:12px;border:1.5px solid var(--border);
+  background:var(--card);cursor:pointer;-webkit-tap-highlight-color:transparent;
+  transition:all .2s;font-size:.7rem;color:var(--text2);font-weight:600;
+}
+.mood-btn.selected{border-color:var(--gold);background:rgba(192,154,90,.1);color:var(--navy)}
+.mood-emoji{font-size:1.5rem;line-height:1}
+.mood-note{margin-top:.5rem}
+.mood-note label{font-size:.82rem;font-weight:600;color:var(--navy);display:block;margin-bottom:.3rem}
+
+/* Symptoms */
+.symptom-grid{display:flex;flex-wrap:wrap;gap:.45rem;margin-bottom:.75rem}
+.symptom-chip{
+  padding:.35rem .7rem;border-radius:20px;border:1.5px solid var(--border);
+  font-size:.8rem;font-weight:600;color:var(--text2);background:var(--card);
+  cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;
+}
+.symptom-chip.active{border-color:var(--rose);background:rgba(201,79,109,.08);color:var(--rose)}
+.symptom-none{
+  padding:.35rem .7rem;border-radius:20px;border:1.5px solid var(--border);
+  font-size:.8rem;font-weight:600;color:var(--text2);background:var(--card);
+  cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .2s;
+}
+.symptom-none.active{border-color:var(--sage);background:rgba(90,158,124,.08);color:var(--sage)}
+.symptom-label{font-size:.82rem;font-weight:700;color:var(--navy);margin-bottom:.4rem}
+
+/* Timeline / Memoir */
+.timeline{position:relative;padding-left:1.5rem}
+.timeline::before{
+  content:'';position:absolute;left:.45rem;top:0;bottom:0;
+  width:2px;background:var(--border);border-radius:2px;
+}
+.tl-entry{position:relative;margin-bottom:1.15rem}
+.tl-dot{
+  position:absolute;left:-1.5rem;top:.35rem;
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid var(--border);background:var(--card);
+  display:flex;align-items:center;justify-content:center;
+  transition:all .2s;
+}
+.tl-entry.has-content .tl-dot{background:var(--gold);border-color:var(--gold)}
+.tl-entry.current .tl-dot{background:var(--rose);border-color:var(--rose);box-shadow:0 0 0 3px rgba(201,79,109,.15)}
+.tl-week{font-size:.78rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.15rem}
+.tl-entry.current .tl-week{color:var(--rose)}
+.tl-summary{font-size:.88rem;color:var(--text);line-height:1.55}
+.tl-mood-chip{
+  display:inline-block;font-size:.75rem;padding:.15rem .45rem;
+  border-radius:10px;background:rgba(192,154,90,.1);color:var(--gold);
+  font-weight:600;margin-right:.3rem;
+}
+.tl-empty{font-size:.82rem;color:var(--border);font-style:italic}
+.tl-milestone-badge{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.78rem;font-weight:600;color:var(--sage);
+  background:rgba(90,158,124,.1);border-radius:10px;
+  padding:.2rem .5rem;margin-top:.3rem;
+}
+
+/* Week picker for timeline */
+.week-pills{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.75rem}
+.week-pill{
+  padding:.25rem .55rem;border-radius:12px;border:1.5px solid var(--border);
+  font-size:.75rem;font-weight:700;color:var(--text2);background:var(--card);
+  cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s;
+}
+.week-pill.has{border-color:var(--gold);color:var(--gold)}
+.week-pill.current{border-color:var(--rose);background:rgba(201,79,109,.07);color:var(--rose)}
+
+/* Bottom nav */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;max-width:440px;margin:0 auto;
+  background:var(--card);border-top:1px solid var(--border);
+  display:flex;padding:.4rem 0 .5rem;z-index:100;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:.4rem 0;background:none;border:none;cursor:pointer;
+  color:var(--text2);font-size:.6rem;font-weight:600;letter-spacing:.02em;
+}
+.nav-btn.active{color:var(--gold)}
+.nav-btn svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.content{padding:1.1rem 1rem 5rem}
+.page-title{font-size:1.5rem;margin-bottom:.2rem}
+.page-sub{color:var(--text2);font-size:.88rem;margin-bottom:1.1rem}
+</style>
+</head>
+<body>
+
+<div class="content">
+
+  <h1 class="page-title">My Journey</h1>
+  <p class="page-sub">Week 28 · Your story, written one week at a time.</p>
+
+  <!-- Section tabs -->
+  <div class="seg-tabs">
+    <button class="seg-tab active" onclick="switchPanel('reflection',this)">✍️ Reflect</button>
+    <button class="seg-tab" onclick="switchPanel('mood',this)">💛 Mood</button>
+    <button class="seg-tab" onclick="switchPanel('symptoms',this)">🌿 Body</button>
+    <button class="seg-tab" onclick="switchPanel('timeline',this)">📖 Memoir</button>
+  </div>
+
+  <!-- ===== REFLECTION PANEL ===== -->
+  <div class="panel active" id="panel-reflection">
+
+    <div class="card">
+      <div class="reflection-prompt">Week 28 · <span>This week's question:</span><br>"What is something you felt this week that surprised you?"</div>
+      <textarea id="reflectionText" placeholder="Write your thoughts... this is just for you." oninput="updateChar(this)"></textarea>
+      <div class="char-count" id="charCount">0 words</div>
+    </div>
+
+    <!-- Past entries -->
+    <h2 style="margin-top:.25rem">Previous Weeks</h2>
+    <div class="card">
+
+      <div class="past-entry" style="border-top:none;padding-top:0;margin-top:0">
+        <div class="past-week-label">Week 27</div>
+        <div class="past-text">"I cried at a commercial and then laughed at myself for crying. I think I am becoming someone different, and that's both terrifying and wonderful."</div>
+      </div>
+
+      <div class="past-entry">
+        <div class="past-week-label">Week 26</div>
+        <div class="past-text">"He kicked for the first time when Peter was talking. I don't think Peter knows yet how much that moment meant to me."</div>
+      </div>
+
+      <div class="past-entry">
+        <div class="past-week-label">Week 25</div>
+        <div class="past-text">"I keep thinking about my mom. Wondering if she felt this way. Wishing I could call her and ask."</div>
+      </div>
+
+      <div style="text-align:center;margin-top:.8rem">
+        <button style="background:none;border:none;color:var(--gold);font-size:.85rem;font-weight:600;cursor:pointer">View all entries →</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== MOOD PANEL ===== -->
+  <div class="panel" id="panel-mood">
+
+    <div class="card">
+      <h3>How are you feeling today?</h3>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:.85rem">Pick the one that fits best right now.</p>
+
+      <div class="mood-row">
+        <button class="mood-btn" onclick="selectMood(this,'Joyful')">
+          <span class="mood-emoji">😊</span>
+          <span>Joyful</span>
+        </button>
+        <button class="mood-btn" onclick="selectMood(this,'Peaceful')">
+          <span class="mood-emoji">🕊️</span>
+          <span>Peaceful</span>
+        </button>
+        <button class="mood-btn" onclick="selectMood(this,'Grateful')">
+          <span class="mood-emoji">🙏</span>
+          <span>Grateful</span>
+        </button>
+        <button class="mood-btn" onclick="selectMood(this,'Hopeful')">
+          <span class="mood-emoji">🌱</span>
+          <span>Hopeful</span>
+        </button>
+      </div>
+      <div class="mood-row">
+        <button class="mood-btn" onclick="selectMood(this,'Tired')">
+          <span class="mood-emoji">😴</span>
+          <span>Tired</span>
+        </button>
+        <button class="mood-btn" onclick="selectMood(this,'Anxious')">
+          <span class="mood-emoji">😰</span>
+          <span>Anxious</span>
+        </button>
+        <button class="mood-btn" onclick="selectMood(this,'Emotional')">
+          <span class="mood-emoji">🥹</span>
+          <span>Emotional</span>
+        </button>
+        <button class="mood-btn" onclick="selectMood(this,'Hard day')">
+          <span class="mood-emoji">🌧️</span>
+          <span>Hard day</span>
+        </button>
+      </div>
+
+      <div class="mood-note" id="moodNote" style="display:none">
+        <label>Want to say more? (optional)</label>
+        <textarea placeholder="Just a sentence is enough..." style="min-height:70px"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:.6rem">This Week's Mood</h3>
+      <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
+        <span style="font-size:.85rem;color:var(--text2)">Mon</span><span style="font-size:1.2rem">😴</span>
+        <span style="font-size:.85rem;color:var(--text2)">Tue</span><span style="font-size:1.2rem">😊</span>
+        <span style="font-size:.85rem;color:var(--text2)">Wed</span><span style="font-size:1.2rem">🥹</span>
+        <span style="font-size:.85rem;color:var(--text2)">Thu</span><span style="font-size:1.2rem">🙏</span>
+        <span style="font-size:.85rem;color:var(--text2)">Fri</span><span style="font-size:1.2rem">—</span>
+        <span style="font-size:.85rem;color:var(--text2)">Sat</span><span style="font-size:1.2rem">—</span>
+        <span style="font-size:.85rem;color:var(--text2)">Sun</span><span style="font-size:1.2rem">—</span>
+      </div>
+      <p style="font-size:.8rem;color:var(--text2);margin-top:.6rem;font-style:italic">"A mostly tender week — tired but grateful."</p>
+    </div>
+
+  </div>
+
+  <!-- ===== SYMPTOMS / BODY PANEL ===== -->
+  <div class="panel" id="panel-symptoms">
+
+    <div class="card">
+      <h3 style="margin-bottom:.3rem">How is your body today?</h3>
+      <p style="font-size:.82rem;color:var(--text2);margin-bottom:.85rem">Tap everything that applies. This is your log — no judgment.</p>
+
+      <div class="symptom-label">Physical</div>
+      <div class="symptom-grid">
+        <span class="symptom-chip" onclick="toggleChip(this)">Back pain</span>
+        <span class="symptom-chip active" onclick="toggleChip(this)">Pelvic pressure</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Nausea</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Heartburn</span>
+        <span class="symptom-chip active" onclick="toggleChip(this)">Swelling</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Round ligament pain</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Headache</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Braxton Hicks</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Shortness of breath</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Leg cramps</span>
+      </div>
+
+      <div class="symptom-label" style="margin-top:.3rem">Energy</div>
+      <div class="symptom-grid">
+        <span class="symptom-chip" onclick="toggleChip(this)">Exhausted</span>
+        <span class="symptom-chip active" onclick="toggleChip(this)">Low energy</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Normal energy</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Good day</span>
+      </div>
+
+      <div class="symptom-label" style="margin-top:.3rem">Sleep</div>
+      <div class="symptom-grid">
+        <span class="symptom-chip" onclick="toggleChip(this)">Slept well</span>
+        <span class="symptom-chip active" onclick="toggleChip(this)">Woke often</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Couldn't sleep</span>
+        <span class="symptom-chip" onclick="toggleChip(this)">Napped</span>
+      </div>
+
+      <div style="margin-top:.85rem;padding-top:.75rem;border-top:1px solid var(--border)">
+        <span class="symptom-none" onclick="toggleNone(this)">✨ Feeling good — no symptoms</span>
+      </div>
+    </div>
+
+    <!-- Weekly symptom summary -->
+    <div class="card">
+      <h3 style="margin-bottom:.5rem">This Week at a Glance</h3>
+      <div style="font-size:.85rem;color:var(--text2);line-height:1.8">
+        <div>📍 Most common: <strong style="color:var(--text)">Pelvic pressure · Swelling</strong></div>
+        <div>💤 Sleep: <strong style="color:var(--text)">Disrupted most nights</strong></div>
+        <div>⚡ Energy: <strong style="color:var(--text)">Low to moderate</strong></div>
+      </div>
+      <p style="font-size:.8rem;color:var(--text2);margin-top:.65rem;font-style:italic">"Week 28 is bringing all the classic third trimester feelings. You're doing well, Shameen."</p>
+    </div>
+
+  </div>
+
+  <!-- ===== MEMOIR / TIMELINE PANEL ===== -->
+  <div class="panel" id="panel-timeline">
+
+    <p style="font-size:.88rem;color:var(--text2);margin-bottom:.85rem;line-height:1.6">Every week you check in, a chapter of your story is written. This is your pregnancy memoir — yours to keep forever.</p>
+
+    <!-- Week picker -->
+    <div style="margin-bottom:.85rem">
+      <div style="font-size:.78rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.5rem">Jump to a week</div>
+      <div class="week-pills">
+        <span class="week-pill has" onclick="scrollToWeek(4)">Wk 4</span>
+        <span class="week-pill has" onclick="scrollToWeek(8)">Wk 8</span>
+        <span class="week-pill has" onclick="scrollToWeek(12)">Wk 12</span>
+        <span class="week-pill has" onclick="scrollToWeek(16)">Wk 16</span>
+        <span class="week-pill has" onclick="scrollToWeek(20)">Wk 20</span>
+        <span class="week-pill has" onclick="scrollToWeek(24)">Wk 24</span>
+        <span class="week-pill has" onclick="scrollToWeek(26)">Wk 26</span>
+        <span class="week-pill has" onclick="scrollToWeek(27)">Wk 27</span>
+        <span class="week-pill current" onclick="scrollToWeek(28)">Wk 28 ◀</span>
+        <span class="week-pill" onclick="scrollToWeek(29)">Wk 29</span>
+        <span class="week-pill" onclick="scrollToWeek(30)">Wk 30</span>
+      </div>
+    </div>
+
+    <!-- Timeline entries -->
+    <div class="timeline">
+
+      <div class="tl-entry has-content" id="week-4">
+        <div class="tl-dot"></div>
+        <div class="tl-week">Week 4 — First positive</div>
+        <div class="tl-summary">
+          <span class="tl-mood-chip">🙏 Grateful</span>
+          <div style="margin-top:.3rem">"I can't believe this is real. I just kept staring at the test."</div>
+          <div class="tl-milestone-badge">🌟 First positive pregnancy test</div>
+        </div>
+      </div>
+
+      <div class="tl-entry has-content" id="week-8">
+        <div class="tl-dot"></div>
+        <div class="tl-week">Week 8</div>
+        <div class="tl-summary">
+          <span class="tl-mood-chip">😴 Tired</span>
+          <div style="margin-top:.3rem">"The nausea is real. I didn't expect to feel this exhausted this early. Holding onto the fact that it means everything is working."</div>
+        </div>
+      </div>
+
+      <div class="tl-entry has-content" id="week-12">
+        <div class="tl-dot"></div>
+        <div class="tl-week">Week 12 — First trimester done</div>
+        <div class="tl-summary">
+          <span class="tl-mood-chip">😊 Joyful</span>
+          <div style="margin-top:.3rem">"Made it to 12 weeks. I feel like I can finally exhale."</div>
+          <div class="tl-milestone-badge">🌿 First trimester complete</div>
+        </div>
+      </div>
+
+      <div class="tl-entry has-content" id="week-16">
+        <div class="tl-dot"></div>
+        <div class="tl-week">Week 16</div>
+        <div class="tl-summary">
+          <span class="tl-mood-chip">🌱 Hopeful</span>
+          <div style="margin-top:.3rem">"Starting to show. Peter noticed today and got quiet in a good way."</div>
+        </div>
+      </div>
+
+      <div class="tl-entry has-content" id="week-20">
+        <div class="tl-dot"></div>
+        <div class="tl-week">Week 20 — Halfway</div>
+        <div class="tl-summary">
+          <span class="tl-mood-chip">🥹 Emotional</span>
+          <div style="margin-top:.3rem">"Today we saw his face on the scan. His face. I am never going to forget that moment as long as I live."</div>
+          <div class="tl-milestone-badge">✨ Anatomy scan — saw Oliver's face</div>
+          <div class="tl-milestone-badge">🎉 Halfway there</div>
+        </div>
+      </div>
+
+      <div class="tl-entry has-content" id="week-24">
+        <div class="tl-dot"></div>
+        <div class="tl-week">Week 24 — Viability milestone</div>
+        <div class="tl-summary">
+          <span class="tl-mood-chip">🙏 Grateful</span>
+          <div style="margin-top:.3rem">"Viability week. I didn't realize how much I was holding my breath until I could finally let it go."</div>
+          <div class="tl-milestone-badge">💛 Viability week reached</div>
+        </div>
+      </div>
+
+      <div class="tl-entry has-content" id="week-26">
+        <div class="tl-dot"></div>
+        <div class="tl-week">Week 26</div>
+        <div class="tl-summary">
+          <span class="tl-mood-chip">🙏 Peaceful</span>
+          <div style="margin-top:.3rem">"He kicked for the first time when Peter was talking. I don't think Peter knows yet how much that moment meant to me."</div>
+        </div>
+      </div>
+
+      <div class="tl-entry has-content" id="week-27">
+        <div class="tl-dot"></div>
+        <div class="tl-week">Week 27</div>
+        <div class="tl-summary">
+          <span class="tl-mood-chip">🥹 Emotional</span>
+          <div style="margin-top:.3rem">"I cried at a commercial and then laughed at myself for crying. I think I am becoming someone different, and that's both terrifying and wonderful."</div>
+        </div>
+      </div>
+
+      <!-- CURRENT WEEK -->
+      <div class="tl-entry current" id="week-28">
+        <div class="tl-dot"></div>
+        <div class="tl-week">Week 28 · You are here 🌸</div>
+        <div class="tl-summary">
+          <div style="font-size:.85rem;color:var(--rose);font-style:italic">You haven't written your Week 28 reflection yet. Head to the Reflect tab to add it.</div>
+        </div>
+      </div>
+
+      <!-- Future weeks (greyed) -->
+      <div class="tl-entry" id="week-29">
+        <div class="tl-dot"></div>
+        <div class="tl-week" style="color:var(--border)">Week 29</div>
+        <div class="tl-empty">Coming soon...</div>
+      </div>
+
+      <div class="tl-entry" id="week-30">
+        <div class="tl-dot"></div>
+        <div class="tl-week" style="color:var(--border)">Week 30</div>
+        <div class="tl-empty">Coming soon...</div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <button class="nav-btn">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Today
+  </button>
+  <button class="nav-btn active">
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Journey
+  </button>
+  <button class="nav-btn">
+    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    Guide
+  </button>
+  <button class="nav-btn">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    Settings
+  </button>
+</nav>
+
+<script>
+function switchPanel(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.seg-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function updateChar(el) {
+  const words = el.value.trim() ? el.value.trim().split(/\s+/).length : 0;
+  document.getElementById('charCount').textContent = words + (words === 1 ? ' word' : ' words');
+}
+
+function selectMood(btn, mood) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('moodNote').style.display = 'block';
+}
+
+function toggleChip(el) {
+  el.classList.toggle('active');
+}
+
+function toggleNone(el) {
+  el.classList.toggle('active');
+  if (el.classList.contains('active')) {
+    document.querySelectorAll('.symptom-chip').forEach(c => c.classList.remove('active'));
+  }
+}
+
+function scrollToWeek(w) {
+  const el = document.getElementById('week-' + w);
+  if (el) {
+    switchPanel('timeline', document.querySelectorAll('.seg-tab')[3]);
+    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+}
+</script>
+</body>
+</html>
