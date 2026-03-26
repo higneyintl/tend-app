@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Tend — My Journey</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fdf6f0;
+  --card:#ffffff;
+  --navy:#1c2b4a;
+  --gold:#c09a5a;
+  --rose:#c94f6d;
+  --sage:#5a9e7c;
+  --amber:#c09a5a;
+  --text:#2d2d2d;
+  --text2:#5a6070;
+  --border:#eae3da;
+  --line:#c09a5a;
+  --future:#d8d0c8;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;
+  min-height:100vh;max-width:440px;margin:0 auto;
+  overflow-x:hidden;
+}
+
+/* ===== FLOATING WEEK INDICATOR ===== */
+#weekIndicator{
+  position:fixed;top:.75rem;right:.85rem;z-index:200;
+  background:rgba(28,43,74,.85);color:#fff;
+  font-size:.75rem;font-weight:700;letter-spacing:.05em;
+  padding:.3rem .7rem;border-radius:20px;
+  backdrop-filter:blur(6px);
+  pointer-events:none;
+  opacity:0;transition:opacity .3s;
+}
+#weekIndicator.visible{opacity:1}
+
+/* ===== HEADER ===== */
+.journey-header{
+  padding:1.4rem 1.2rem .5rem;
+  position:sticky;top:0;z-index:100;
+  background:var(--bg);
+  border-bottom:1px solid var(--border);
+}
+.journey-title{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:1.6rem;font-weight:700;color:var(--navy);
+  margin-bottom:.1rem;
+}
+.journey-sub{color:var(--text2);font-size:.85rem}
+
+/* ===== TIMELINE WRAP ===== */
+.timeline-wrap{
+  padding:1.5rem 1rem 6rem 1rem;
+  position:relative;
+}
+
+/* The vertical line — drawn as a pseudo-element on the wrap */
+.timeline-line{
+  position:absolute;
+  left:2.05rem;
+  top:0;bottom:0;
+  width:2px;
+  background:linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--sage) 3%,
+    var(--sage) 32%,
+    var(--amber) 33%,
+    var(--amber) 68%,
+    var(--rose) 69%,
+    var(--rose) 97%,
+    transparent 100%
+  );
+  opacity:.35;
+  border-radius:2px;
+}
+
+/* ===== TRIMESTER DIVIDERS ===== */
+.tri-label{
+  display:flex;align-items:center;gap:.6rem;
+  margin-bottom:1rem;margin-top:.5rem;
+  padding-left:3.5rem;
+}
+.tri-label-text{
+  font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+}
+.tri-label-line{flex:1;height:1px;opacity:.2}
+.tri-sage{color:var(--sage)}.tri-sage .tri-label-line{background:var(--sage)}
+.tri-amber{color:var(--amber)}.tri-amber .tri-label-line{background:var(--amber)}
+.tri-rose{color:var(--rose)}.tri-rose .tri-label-line{background:var(--rose)}
+.tri-pp{color:var(--rose)}.tri-pp .tri-label-line{background:var(--rose)}
+
+/* ===== WEEK ROW ===== */
+.week-row{
+  position:relative;
+  display:flex;align-items:flex-start;gap:.85rem;
+  margin-bottom:.1rem;
+  padding:.55rem 0;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.week-row:last-child{margin-bottom:0}
+
+/* The dot */
+.wk-dot{
+  flex-shrink:0;
+  width:2.1rem;display:flex;align-items:center;justify-content:center;
+  padding-top:.18rem;
+  position:relative;
+  z-index:2;
+}
+.dot{
+  width:12px;height:12px;border-radius:50%;
+  border:2px solid var(--future);
+  background:var(--bg);
+  transition:all .3s;
+  position:relative;
+}
+.dot.done-sage{background:var(--sage);border-color:var(--sage)}
+.dot.done-amber{background:var(--amber);border-color:var(--amber)}
+.dot.done-rose{background:var(--rose);border-color:var(--rose)}
+.dot.current{
+  width:18px;height:18px;
+  background:var(--rose);border-color:var(--rose);
+  box-shadow:0 0 0 4px rgba(201,79,109,.15);
+  animation:breathe 3s ease-in-out infinite;
+}
+.dot.milestone-dot{
+  width:16px;height:16px;
+  border:2.5px solid var(--gold);
+  background:var(--gold);
+}
+.dot.milestone-dot.current{
+  width:20px;height:20px;
+  box-shadow:0 0 0 5px rgba(192,154,90,.2);
+}
+@keyframes breathe{
+  0%,100%{box-shadow:0 0 0 4px rgba(201,79,109,.15)}
+  50%{box-shadow:0 0 0 9px rgba(201,79,109,.06)}
+}
+
+/* Week label area */
+.wk-label{
+  flex:1;
+  padding-top:.08rem;
+}
+.wk-num{
+  font-size:.78rem;font-weight:700;color:var(--text2);
+  text-transform:uppercase;letter-spacing:.04em;
+  margin-bottom:.05rem;
+}
+.wk-num.current{color:var(--rose)}
+.wk-title{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:.95rem;font-weight:400;color:var(--navy);
+  line-height:1.35;
+}
+.wk-title.future{color:var(--future);font-style:italic}
+.wk-size{
+  font-size:.78rem;color:var(--text2);margin-top:.1rem;font-style:italic;
+}
+
+/* ===== EXPANDED CARD ===== */
+.week-card{
+  display:none;
+  margin:0 0 .6rem 3rem;
+  background:var(--card);
+  border-radius:14px;
+  padding:1rem 1.1rem;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
+  border-left:3px solid var(--border);
+  animation:slideDown .2s ease;
+}
+.week-card.open{display:block}
+.week-card.sage-card{border-left-color:var(--sage)}
+.week-card.amber-card{border-left-color:var(--amber)}
+.week-card.rose-card{border-left-color:var(--rose)}
+
+@keyframes slideDown{
+  from{opacity:0;transform:translateY(-6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.card-dev{
+  font-size:.88rem;line-height:1.7;color:var(--text);
+  margin-bottom:.75rem;
+}
+.card-size-row{
+  display:flex;align-items:center;gap:.5rem;
+  margin-bottom:.7rem;
+}
+.card-size-emoji{font-size:1.6rem}
+.card-size-text{font-size:.85rem;color:var(--text2)}
+.card-size-text strong{color:var(--navy)}
+
+/* Consistency dots */
+.consistency-row{
+  display:flex;align-items:center;gap:.3rem;
+  margin-bottom:.7rem;
+}
+.c-dot{width:7px;height:7px;border-radius:50%;background:var(--border)}
+.c-dot.filled-sage{background:var(--sage)}
+.c-dot.filled-amber{background:var(--amber)}
+.c-dot.filled-rose{background:var(--rose)}
+.consistency-label{font-size:.75rem;color:var(--text2);margin-left:.2rem}
+
+/* See full week link */
+.card-link{
+  display:inline-flex;align-items:center;gap:.3rem;
+  font-size:.82rem;font-weight:700;color:var(--gold);
+  border:none;background:none;padding:0;cursor:pointer;
+}
+.done-badge{
+  float:right;font-size:.7rem;color:var(--sage);font-weight:700;
+  opacity:.7;
+}
+
+/* ===== MILESTONE CARD ===== */
+.milestone-card{
+  display:none;
+  margin:0 0 .8rem 3rem;
+  background:linear-gradient(135deg,rgba(192,154,90,.07),rgba(192,154,90,.14));
+  border:1.5px solid rgba(192,154,90,.3);
+  border-radius:16px;
+  padding:1.2rem 1.15rem;
+  animation:slideDown .2s ease;
+  position:relative;
+  overflow:hidden;
+}
+.milestone-card.open{display:block}
+.milestone-card::before{
+  content:'✦ ✦ ✦';
+  position:absolute;top:.5rem;right:.75rem;
+  font-size:.6rem;color:rgba(192,154,90,.4);
+  letter-spacing:.3em;
+}
+.milestone-title{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:1.05rem;font-weight:700;font-style:italic;
+  color:var(--navy);margin-bottom:.6rem;line-height:1.4;
+}
+.milestone-msg{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:.92rem;font-style:italic;line-height:1.75;
+  color:var(--text);margin-bottom:.75rem;
+}
+.milestone-size{
+  display:flex;align-items:center;gap:.5rem;
+  font-size:.85rem;color:var(--text2);
+}
+.milestone-size-emoji{font-size:1.5rem}
+
+/* ===== POSTPARTUM TRANSITION ===== */
+.pp-threshold{
+  margin:1rem 0 .5rem 3rem;
+  padding:1rem 1.1rem;
+  background:linear-gradient(135deg,rgba(201,79,109,.06),rgba(201,79,109,.12));
+  border-radius:14px;
+  border:1px solid rgba(201,79,109,.2);
+  text-align:center;
+}
+.pp-threshold-title{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:1.15rem;font-weight:700;color:var(--rose);
+  margin-bottom:.3rem;
+}
+.pp-threshold-sub{
+  font-family:'Playfair Display',Georgia,serif;
+  font-size:.88rem;font-style:italic;color:var(--text2);
+  line-height:1.6;
+}
+
+/* Bottom nav */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;max-width:440px;margin:0 auto;
+  background:var(--card);border-top:1px solid var(--border);
+  display:flex;padding:.4rem 0 .5rem;z-index:150;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:.4rem 0;background:none;border:none;cursor:pointer;
+  color:var(--text2);font-size:.6rem;font-weight:600;letter-spacing:.02em;
+}
+.nav-btn.active{color:var(--gold)}
+.nav-btn svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+</style>
+</head>
+<body>
+
+<!-- Floating week indicator -->
+<div id="weekIndicator">Week 1</div>
+
+<!-- Header -->
+<div class="journey-header">
+  <div class="journey-title">My Journey</div>
+  <div class="journey-sub">Week 28 of 40 · Oliver is the size of an eggplant 🍆</div>
+</div>
+
+<!-- Timeline -->
+<div class="timeline-wrap" id="timelineWrap">
+  <div class="timeline-line"></div>
+  <div id="timeline"></div>
+</div>
+
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <button class="nav-btn">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Today
+  </button>
+  <button class="nav-btn active">
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    Journey
+  </button>
+  <button class="nav-btn">
+    <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+    Guide
+  </button>
+  <button class="nav-btn">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    Settings
+  </button>
+</nav>
+
+<script>
+const CURRENT_WEEK = 28;
+
+const WEEKS = [
+  { w:1,  title:"The Hidden Beginning",        size:"a poppy seed",      emoji:"🌱", tri:1, dev:"Your body is preparing the lining of your womb like soil being tilled before a seed is planted. The work has begun even before conception, and it is holy." },
+  { w:2,  title:"The Quiet Preparation",        size:"a grain of sand",   emoji:"✨", tri:1, dev:"One egg among many is being selected and ripened, preparing for its remarkable journey. The hormonal choreography happening right now is staggeringly intricate." },
+  { w:3,  title:"The Miracle Moment",           size:"a poppy seed",      emoji:"🌸", tri:1, dev:"Fertilization may have occurred. A single cell, carrying half of you and half of Peter, is beginning the most extraordinary journey of its existence." },
+  { w:4,  title:"The Seed Takes Hold",          size:"a poppy seed",      emoji:"🌱", tri:1, dev:"Implantation is happening. Your baby — barely larger than a period at the end of a sentence — has found her home and is beginning to make herself known." },
+  { w:5,  title:"The Heart Begins",             size:"a sesame seed",     emoji:"🫘", tri:1, dev:"The neural tube that will become your baby's brain and spine is forming. Her heart, a tiny cluster of cells, is beginning to beat. She is the size of a sesame seed and she already has a heartbeat." },
+  { w:6,  title:"The First Flutter of Life",    size:"a lentil",          emoji:"🫘", tri:1, dev:"Her face is taking shape — tiny pits where eyes will be, a small fold where her mouth will form. She is moving, though you cannot feel it yet." },
+  { w:7,  title:"Everything Is Forming",        size:"a blueberry",       emoji:"🫐", tri:1, dev:"Her brain is generating 100 new neurons every minute. Her hands have begun to form, still webbed like tiny fins. She looks more like a baby every day." },
+  { w:8,  title:"Your Baby Has a Face",         size:"a raspberry",       emoji:"🫐", tri:1, dev:"Fingers and toes are becoming distinct. Eyelids are forming. She has a nose, lips, and the beginning of a chin. She is about an inch long and unmistakably human." },
+  { w:9,  title:"The Tail Is Gone",             size:"a grape",           emoji:"🍇", tri:1, dev:"She is officially a fetus. The embryonic tail has disappeared. Her joints work — she can flex her wrists and her ankles. She is small and entirely herself." },
+  { w:10, title:"Tiny Fingers, Tiny Toes",      size:"a kumquat",         emoji:"🍊", tri:1, dev:"Her organs are formed and functioning. Her fingerprints are developing — unique to her, already hers. She can swallow and move her tiny limbs." },
+  { w:11, title:"The Fog Begins to Lift",       size:"a fig",             emoji:"🌿", tri:1, dev:"She weighs less than an ounce and is about two inches long. Her bones are beginning to harden. For many women, nausea begins to ease this week. You have done something hard." },
+  { w:12, title:"End of the First Trimester",   size:"a lime",            emoji:"🍋", tri:1, dev:"You have carried her through the most critical weeks of development. Her vital organs are formed. Her reflexes are working. She can open and close her fingers. You have been so faithful.", milestone:true, milestoneMsg:"You have reached the end of the first trimester. The weeks behind you were the most fragile — and you carried her through every one of them. Oliver is the size of a lime, and every organ he will ever need has now formed. You have been so faithful." },
+  { w:13, title:"You Made It",                  size:"a lemon",           emoji:"🍋", tri:1, dev:"The first trimester is complete. Her vocal cords are forming. She can make facial expressions — she may already be practicing the face she'll give you when she's two. You are a mother." },
+  { w:14, title:"Second Trimester Begins",      size:"a lemon",           emoji:"🍋", tri:2, dev:"Welcome to the second trimester. Many women notice a return of energy this week. Her kidneys are producing urine. She can squint and frown and grimace. She is practicing." },
+  { w:15, title:"Growing Strong",               size:"an apple",          emoji:"🍎", tri:2, dev:"She can sense light even through her fused eyelids. She's busy moving — turning, rolling, flexing — though you likely can't feel it yet. She is four inches long and growing fast." },
+  { w:16, title:"Hello, Little One",            size:"an avocado",        emoji:"🥑", tri:2, dev:"Her eyes are finally facing forward. She can make sucking motions. Some women begin to feel the first flutters of movement this week — like bubbles, or a tiny wing." },
+  { w:17, title:"She Can Hear You",             size:"a pear",            emoji:"🍐", tri:2, dev:"Her skeleton is changing from soft cartilage to bone. Her ears are fully formed — she can hear your voice, your heartbeat, the sounds of your world. Speak to her." },
+  { w:18, title:"She Is Moving",                size:"a bell pepper",     emoji:"🫑", tri:2, dev:"If you haven't felt her yet, you likely will soon. Her movements are becoming more coordinated. She yawns. She hiccups. She is fully, unmistakably present." },
+  { w:19, title:"Halfway Almost Here",          size:"a mango",           emoji:"🥭", tri:2, dev:"She is covered in a white, creamy coating called vernix that protects her skin in the womb. She is nearly halfway done. You are nearly halfway there." },
+  { w:20, title:"Halfway There",                size:"a banana",          emoji:"🍌", tri:2, dev:"You are exactly halfway through your pregnancy. She can hear your voice now — she knows it better than any other sound in the world. You have carried her half the way home.", milestone:true, milestoneMsg:"You are halfway there. Oliver is the size of a banana, and he can hear your voice now — he knows it better than any sound in the world. Twenty weeks behind you. Twenty weeks ahead. You have been so faithful, and the best is still coming." },
+  { w:21, title:"She's a Carrot",               size:"a carrot",          emoji:"🥕", tri:2, dev:"She sleeps and wakes in regular cycles. She may be most active at night — she is rocked to sleep by your movement during the day. Her skin is still translucent but she is filling out." },
+  { w:22, title:"Starting to Look Like Herself",size:"a papaya",          emoji:"🧡", tri:2, dev:"Her face is fully formed — her lips, eyebrows, and eyelids are all in place. If you could see her right now, you would recognize her. She already looks like herself." },
+  { w:23, title:"She Can Feel Your Touch",      size:"a grapefruit",      emoji:"🍊", tri:2, dev:"She can feel when you press on your belly. She may press back. Her lungs are developing the surfactant she'll need to breathe. She is listening. She is responding." },
+  { w:24, title:"The Viability Milestone",      size:"an ear of corn",    emoji:"🌽", tri:2, dev:"This is the week of viability — if she were born today, she would have a chance. This does not mean you were afraid before. It means you have one more reason to exhale.", milestone:true, milestoneMsg:"Week 24. The viability milestone. If Oliver were born today, he would have a fighting chance — and with every day that passes, those chances grow. You have carried him through his most fragile season. You can breathe a little easier now." },
+  { w:25, title:"She's Putting on Weight",      size:"a rutabaga",        emoji:"🌿", tri:2, dev:"She is beginning to accumulate the fat that will round her cheeks and fill out her limbs. Her hands are fully developed — she grips, she releases, she explores." },
+  { w:26, title:"Eyes Are Opening",             size:"a scallion bunch",  emoji:"🌿", tri:2, dev:"Her eyes are opening for the first time. She can blink. She may respond to bright light. She is beginning to look at the world — or at least, at the warm glow inside the womb." },
+  { w:27, title:"The Third Trimester Approaches",size:"a cauliflower",    emoji:"🥦", tri:2, dev:"She can now recognize your voice and may respond to familiar music. This is the last week of the second trimester. The final stretch begins next week. You are almost there." },
+  { w:28, title:"Welcome to the Third Trimester",size:"an eggplant",      emoji:"🍆", tri:3, dev:"You have entered the third and final trimester. Her brain is developing rapidly — forming the wrinkles and folds that make human thought possible. She blinks. She dreams. She is getting ready for you." },
+  { w:29, title:"She's Getting Ready",          size:"a butternut squash",emoji:"🎃", tri:3, dev:"Her muscles and lungs are continuing to mature. She moves more vigorously now — you can feel her rolls and kicks and stretches. This is her getting stronger for the work ahead." },
+  { w:30, title:"Head Down Practice",           size:"a head of cabbage", emoji:"🥬", tri:3, dev:"She may be beginning to settle into a head-down position. Her bone marrow is now fully responsible for producing red blood cells. She is preparing herself." },
+  { w:31, title:"Rapid Brain Development",      size:"a coconut",         emoji:"🥥", tri:3, dev:"Her brain is developing at a remarkable rate. All five of her senses are working. She can process information from the outside world and respond. She is ready to meet you." },
+  { w:32, title:"Practicing Everything",        size:"a jicama",          emoji:"🌿", tri:3, dev:"She practices breathing, blinking, and sucking every day. She is putting on about half a pound a week now. She is getting rounder, softer, more ready." },
+  { w:33, title:"Bones Are Hardening",          size:"a pineapple",       emoji:"🍍", tri:3, dev:"Her bones are hardening everywhere except her skull — which remains soft and flexible to navigate the birth canal. Her immune system is receiving antibodies from you. You are giving her your protection." },
+  { w:34, title:"Almost There",                 size:"a cantaloupe",      emoji:"🍈", tri:3, dev:"Her central nervous system is maturing. Her lungs are almost fully developed. If she were born this week, she would almost certainly thrive. You are so close." },
+  { w:35, title:"The Final Countdown",          size:"a honeydew melon",  emoji:"🍈", tri:3, dev:"She is likely head down and dropping lower. Your body is preparing for labor in ways you may be starting to feel — more pressure, more Braxton Hicks, more weight. She is coming." },
+  { w:36, title:"Full Term Is Close",           size:"a head of romaine", emoji:"🥬", tri:3, dev:"She is shedding the lanugo and vernix that covered her skin. She is swallowing them and building up meconium. Her lungs are mature. She is ready, or nearly so." },
+  { w:37, title:"Full Term",                    size:"a winter melon",    emoji:"🍈", tri:3, dev:"She is full term. Every day she spends inside you now is a gift — additional brain development, additional weight, additional readiness. But she is ready. And so are you.", milestone:true, milestoneMsg:"Full term. She is full term. Oliver could arrive any day now, and he is ready — his lungs are mature, his brain is developed, his body is prepared for the world. And so are you. You have carried him faithfully through every week. The threshold is near." },
+  { w:38, title:"Any Day Now",                  size:"a leek",            emoji:"🌿", tri:3, dev:"Her head may be fully engaged in your pelvis. She is running out of room, which is exactly as it should be. She is ready. Your body knows what to do. Trust it." },
+  { w:39, title:"Ripe and Ready",               size:"a mini watermelon", emoji:"🍉", tri:3, dev:"She has shed most of her vernix. Her chest is becoming more prominent. She is fully ready for the world outside. The wait is almost over." },
+  { w:40, title:"The Due Date",                 size:"a watermelon",      emoji:"🍉", tri:3, dev:"You have reached your due date. Everything you have carried, every prayer, every sleepless night, every moment of fear and wonder and hope — it has all been leading here. She is coming." },
+];
+
+// Sample completed-week check-in dots (7 per week = M–Su)
+const SAMPLE_DOTS = {
+  4: [1,1,1,1,1,1,0],
+  8: [1,1,0,1,1,1,1],
+  12:[1,1,1,1,1,0,1],
+  16:[1,0,1,1,1,1,1],
+  20:[1,1,1,1,0,1,1],
+  24:[1,1,1,0,1,1,1],
+  27:[0,1,1,1,1,1,1],
+};
+
+function triClass(tri){
+  if(tri===1) return 'sage'; if(tri===2) return 'amber'; return 'rose';
+}
+function dotClass(w, tri){
+  if(w > CURRENT_WEEK) return '';
+  if(w === CURRENT_WEEK) return 'current';
+  return 'done-' + triClass(tri);
+}
+function cardClass(tri){ return triClass(tri) + '-card'; }
+
+function renderDots(week, tri){
+  const dots = SAMPLE_DOTS[week];
+  if(!dots) return '';
+  const cls = 'filled-' + triClass(tri);
+  const html = dots.map(d => `<div class="c-dot ${d ? cls : ''}"></div>`).join('');
+  return `<div class="consistency-row">${html}<span class="consistency-label">days completed</span></div>`;
+}
+
+function renderWeek(wk){
+  const isCurrent = wk.w === CURRENT_WEEK;
+  const isPast = wk.w < CURRENT_WEEK;
+  const isFuture = wk.w > CURRENT_WEEK;
+  const isMilestone = wk.milestone;
+  const tc = triClass(wk.tri);
+
+  const dotCls = isMilestone && !isFuture
+    ? `milestone-dot ${isCurrent ? 'current' : (isPast ? 'done-'+tc : '')}`
+    : dotClass(wk.w, wk.tri);
+
+  const numLabel = isCurrent
+    ? `<div class="wk-num current">Week ${wk.w} · You are here 🌸</div>`
+    : `<div class="wk-num">Week ${wk.w}</div>`;
+
+  const titleCls = isFuture ? 'future' : '';
+  const doneBadge = isPast && !isMilestone ? `<span class="done-badge">✓</span>` : '';
+
+  // Expanded card content
+  let cardContent = '';
+  if(isMilestone && !isFuture){
+    cardContent = `
+      <div class="milestone-card ${isCurrent||isPast ? 'open' : ''}" id="mc-${wk.w}">
+        <div class="milestone-title">${isCurrent ? 'You are here — Week ' + wk.w : 'Week ' + wk.w} ✦</div>
+        <div class="milestone-msg">${wk.milestoneMsg}</div>
+        <div class="milestone-size">
+          <span class="milestone-size-emoji">${wk.emoji}</span>
+          <span>About the size of <strong>${wk.size}</strong></span>
+        </div>
+        ${isPast ? renderDots(wk.w, wk.tri) : ''}
+      </div>`;
+  } else {
+    cardContent = `
+      <div class="week-card ${isCurrent ? 'open rose-card' : (isPast ? cardClass(wk.tri) : '')}" id="wc-${wk.w}">
+        ${doneBadge}
+        <div class="card-size-row">
+          <span class="card-size-emoji">${wk.emoji}</span>
+          <div class="card-size-text">About the size of <strong>${wk.size}</strong></div>
+        </div>
+        <div class="card-dev">${wk.dev}</div>
+        ${isPast ? renderDots(wk.w, wk.tri) : ''}
+        <button class="card-link">See full week →</button>
+      </div>`;
+  }
+
+  return `
+    <div class="week-row" id="row-${wk.w}" onclick="toggleWeek(${wk.w}, ${!!wk.milestone && !isFuture})">
+      <div class="wk-dot"><div class="dot ${dotCls}"></div></div>
+      <div class="wk-label">
+        ${numLabel}
+        <div class="wk-title ${titleCls}">${wk.title}</div>
+        ${!isFuture ? `<div class="wk-size">${wk.emoji} ${wk.size}</div>` : ''}
+      </div>
+    </div>
+    ${cardContent}`;
+}
+
+function renderTrimesterLabel(text, cls){
+  return `<div class="tri-label ${cls}"><span class="tri-label-text">${text}</span><div class="tri-label-line"></div></div>`;
+}
+
+function renderPostpartum(){
+  return `
+    ${renderTrimesterLabel('Postpartum · Your Story Continues', 'tri-pp')}
+    <div class="pp-threshold">
+      <div class="pp-threshold-title">Oliver Is Here</div>
+      <div class="pp-threshold-sub">"You did it. Now begins the tenderest season."</div>
+    </div>
+    <div class="week-row">
+      <div class="wk-dot"><div class="dot" style="border-color:var(--future)"></div></div>
+      <div class="wk-label">
+        <div class="wk-num">Day 1–7</div>
+        <div class="wk-title future">The First Week</div>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="wk-dot"><div class="dot" style="border-color:var(--future)"></div></div>
+      <div class="wk-label">
+        <div class="wk-num">Week 2</div>
+        <div class="wk-title future">Finding Your Footing</div>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="wk-dot"><div class="dot" style="border-color:var(--future)"></div></div>
+      <div class="wk-label">
+        <div class="wk-num">Weeks 3–12</div>
+        <div class="wk-title future">The Fourth Trimester</div>
+      </div>
+    </div>
+    <div class="week-row">
+      <div class="wk-dot"><div class="dot" style="border-color:var(--future)"></div></div>
+      <div class="wk-label">
+        <div class="wk-num">Months 4–12</div>
+        <div class="wk-title future">The First Year</div>
+      </div>
+    </div>`;
+}
+
+function build(){
+  let html = renderTrimesterLabel('First Trimester · Weeks 1–13', 'tri-sage');
+  for(let i=0; i<13; i++) html += renderWeek(WEEKS[i]);
+  html += renderTrimesterLabel('Second Trimester · Weeks 14–27', 'tri-amber');
+  for(let i=13; i<27; i++) html += renderWeek(WEEKS[i]);
+  html += renderTrimesterLabel('Third Trimester · Weeks 28–40', 'tri-rose');
+  for(let i=27; i<40; i++) html += renderWeek(WEEKS[i]);
+  html += renderPostpartum();
+  document.getElementById('timeline').innerHTML = html;
+}
+
+function toggleWeek(w, isMilestone){
+  const id = isMilestone ? 'mc-' + w : 'wc-' + w;
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.classList.toggle('open');
+}
+
+// Floating indicator on scroll
+const indicator = document.getElementById('weekIndicator');
+let indicatorTimer;
+window.addEventListener('scroll', () => {
+  // Find which week is most visible
+  let closest = null;
+  let closestDist = Infinity;
+  const mid = window.innerHeight / 2;
+  for(let w = 1; w <= 40; w++){
+    const row = document.getElementById('row-' + w);
+    if(!row) continue;
+    const rect = row.getBoundingClientRect();
+    const dist = Math.abs(rect.top - mid);
+    if(dist < closestDist){ closestDist = dist; closest = w; }
+  }
+  if(closest){
+    indicator.textContent = 'Week ' + closest;
+    indicator.classList.add('visible');
+    clearTimeout(indicatorTimer);
+    indicatorTimer = setTimeout(() => indicator.classList.remove('visible'), 1200);
+  }
+}, { passive: true });
+
+build();
+
+// Scroll to current week on load
+setTimeout(() => {
+  const el = document.getElementById('row-' + CURRENT_WEEK);
+  if(el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}, 200);
+</script>
+</body>
+</html>
