@@ -185,28 +185,93 @@ blockquote{
 
 a{color:var(--gold);text-decoration:none}
 
-/* Index */
-.index{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:16px;padding:1.5rem 1.75rem;
-  margin-bottom:3rem;
+/* Sticky TOC button */
+.toc-toggle{
+  position:fixed;top:.85rem;right:.85rem;z-index:300;
+  background:var(--navy);color:var(--gold);
+  border:none;border-radius:10px;
+  padding:.5rem .85rem;font-size:.82rem;font-weight:700;letter-spacing:.06em;
+  cursor:pointer;display:flex;align-items:center;gap:.4rem;
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
+  -webkit-tap-highlight-color:transparent;
 }
-.index-title{
-  font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;
-  color:var(--navy);margin-bottom:1rem;
+
+/* Drawer overlay */
+.toc-overlay{
+  position:fixed;inset:0;z-index:400;
+  background:rgba(0,0,0,.45);
+  opacity:0;pointer-events:none;
+  transition:opacity .3s;
 }
-.index-group{margin-bottom:1rem}
-.index-group-label{
-  font-family:'Lato',sans-serif;font-size:.7rem;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;color:var(--gold);
-  margin-bottom:.4rem;
+.toc-overlay.open{opacity:1;pointer-events:all}
+
+/* Drawer panel */
+.toc-drawer{
+  position:fixed;top:0;left:0;bottom:0;z-index:500;
+  width:82vw;max-width:320px;
+  background:var(--navy);
+  transform:translateX(-100%);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+  padding:0 0 2rem;
+  box-shadow:4px 0 24px rgba(0,0,0,.25);
 }
-.index-links{list-style:none}
-.index-links li{padding:.2rem 0;border-bottom:1px solid var(--border)}
-.index-links li:last-child{border-bottom:none}
-.index-links a{font-size:.92rem;color:var(--navy);text-decoration:none;display:flex;justify-content:space-between;align-items:center}
-.index-links a:hover{color:var(--gold)}
-.index-links a::after{content:'→';color:var(--gold);font-size:.85rem}
+.toc-drawer.open{transform:translateX(0)}
+
+/* Drawer header */
+.toc-header{
+  padding:1.4rem 1.4rem 1rem;
+  border-bottom:1px solid rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.toc-header-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.3rem;font-weight:700;color:var(--gold);
+}
+.toc-header-sub{
+  font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.4);margin-top:.15rem;
+}
+.toc-close{
+  background:none;border:none;color:rgba(255,255,255,.5);
+  font-size:1.3rem;cursor:pointer;padding:.2rem .4rem;
+  -webkit-tap-highlight-color:transparent;
+}
+.toc-close:hover{color:var(--gold)}
+
+/* Drawer sections */
+.toc-group{padding:.9rem 1.4rem .4rem}
+.toc-group-label{
+  font-size:.65rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.55rem;
+}
+.toc-item{
+  display:block;
+  font-family:'Lato',sans-serif;
+  font-size:.88rem;color:rgba(255,255,255,.75);
+  padding:.45rem .65rem;
+  border-radius:8px;
+  text-decoration:none;
+  transition:background .15s,color .15s;
+  margin-bottom:.15rem;
+  -webkit-tap-highlight-color:transparent;
+}
+.toc-item:hover,.toc-item:active{background:rgba(255,255,255,.08);color:#fff}
+.toc-item.active{background:rgba(192,154,90,.15);color:var(--gold)}
+
+/* Pill grid for weeks */
+.toc-pills{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.5rem}
+.toc-pill{
+  font-size:.75rem;font-weight:700;color:rgba(255,255,255,.6);
+  background:rgba(255,255,255,.07);
+  border-radius:6px;padding:.25rem .45rem;
+  text-decoration:none;
+  -webkit-tap-highlight-color:transparent;
+  transition:background .15s,color .15s;
+}
+.toc-pill:hover{background:rgba(192,154,90,.2);color:var(--gold)}
+
+.toc-divider{height:1px;background:rgba(255,255,255,.08);margin:.5rem 1.4rem}
 </style>
 </head>
 <body>
@@ -219,34 +284,163 @@ a{color:var(--gold);text-decoration:none}
 </div>
 
 
-<!-- INDEX -->
-<div class="index" id="index">
-  <div class="index-title">Table of Contents</div>
+<!-- TOC TOGGLE BUTTON -->
+<button class="toc-toggle" onclick="openTOC()">☰ Contents</button>
 
-  <div class="index-group">
-    <div class="index-group-label">Content Strategy — Today Tab</div>
-    <ul class="index-links">
-      <li><a href="#part1">Part One — Pregnancy: What She Needs Week by Week</a></li>
-      <li><a href="#part2">Part Two — The Birth Threshold</a></li>
-      <li><a href="#part3">Part Three — Postpartum: Her Recovery</a></li>
-      <li><a href="#part4">Part Four — Postpartum: Baby Education</a></li>
-      <li><a href="#part5">Part Five — The Adaptive Strategy</a></li>
-      <li><a href="#part6">Part Six — The Things Nobody Says</a></li>
-      <li><a href="#part7">Part Seven — A Day in the App</a></li>
-    </ul>
+<!-- TOC OVERLAY -->
+<div class="toc-overlay" id="tocOverlay" onclick="closeTOC()"></div>
+
+<!-- TOC DRAWER -->
+<nav class="toc-drawer" id="tocDrawer">
+  <div class="toc-header">
+    <div>
+      <div class="toc-header-title">Tend</div>
+      <div class="toc-header-sub">Vision Document</div>
+    </div>
+    <button class="toc-close" onclick="closeTOC()">✕</button>
   </div>
 
-  <div class="index-group">
-    <div class="index-group-label">Content Strategy — All Other Tabs</div>
-    <ul class="index-links">
-      <li><a href="#part8">Part Eight — The Journey Tab</a></li>
-      <li><a href="#part9">Part Nine — The Guide Tab</a></li>
-      <li><a href="#part10">Part Ten — The Circle Tab</a></li>
-      <li><a href="#part11">Part Eleven — Onboarding & Settings</a></li>
-      <li><a href="#part12">Part Twelve — The Full App Framework</a></li>
-    </ul>
+  <div class="toc-group">
+    <div class="toc-group-label">Today Tab — Content Strategy</div>
+    <a class="toc-item" href="#part1" onclick="closeTOC()">Pregnancy — Week by Week</a>
+    <a class="toc-item" href="#part2" onclick="closeTOC()">The Birth Threshold</a>
+    <a class="toc-item" href="#part3" onclick="closeTOC()">Postpartum — Her Recovery</a>
+    <a class="toc-item" href="#part4" onclick="closeTOC()">Postpartum — Baby Education</a>
+    <a class="toc-item" href="#part5" onclick="closeTOC()">The Adaptive Strategy</a>
+    <a class="toc-item" href="#part6" onclick="closeTOC()">The Things Nobody Says</a>
+    <a class="toc-item" href="#part7" onclick="closeTOC()">A Day in the App</a>
   </div>
-</div>
+
+  <div class="toc-divider"></div>
+
+  <div class="toc-group">
+    <div class="toc-group-label">All Other Tabs</div>
+    <a class="toc-item" href="#part8" onclick="closeTOC()">Journey Tab</a>
+    <a class="toc-item" href="#part9" onclick="closeTOC()">Guide Tab</a>
+    <a class="toc-item" href="#part10" onclick="closeTOC()">Circle Tab</a>
+    <a class="toc-item" href="#part11" onclick="closeTOC()">Onboarding & Settings</a>
+    <a class="toc-item" href="#part12" onclick="closeTOC()">Full App Framework</a>
+  </div>
+
+  <div class="toc-divider"></div>
+
+  <div class="toc-group">
+    <div class="toc-group-label">First Trimester · Weeks 1–13</div>
+    <div class="toc-pills">
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W1</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W2</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W3</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W4</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W5</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W6</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W7</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W8</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W9</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W10</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W11</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W12</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W13</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-label">Second Trimester · Weeks 14–27</div>
+    <div class="toc-pills">
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W14</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W15</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W16</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W17</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W18</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W19</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W20</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W21</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W22</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W23</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W24</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W25</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W26</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W27</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-label">Third Trimester · Weeks 28–40</div>
+    <div class="toc-pills">
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W28</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W29</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W30</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W31</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W32</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W33</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W34</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W35</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W36</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W37</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W38</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W39</a>
+      <a class="toc-pill" href="#part1" onclick="closeTOC()">W40</a>
+    </div>
+  </div>
+
+  <div class="toc-divider"></div>
+
+  <div class="toc-group">
+    <div class="toc-group-label">Postpartum — Days 1–14</div>
+    <div class="toc-pills">
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D1</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D2</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D3</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D4</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D5</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D6</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D7</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D8</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D9</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D10</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D11</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D12</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D13</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">D14</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-label">Postpartum — Weeks 3–12</div>
+    <div class="toc-pills">
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W3</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W4</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W5</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W6</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W7</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W8</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W9</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W10</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W11</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">W12</a>
+    </div>
+  </div>
+
+  <div class="toc-group">
+    <div class="toc-group-label">Postpartum — Months 4–12</div>
+    <div class="toc-pills">
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">M4</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">M5</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">M6</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">M7</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">M8</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">M9</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">M10</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">M11</a>
+      <a class="toc-pill" href="#part3" onclick="closeTOC()">M12</a>
+    </div>
+  </div>
+
+</nav>
+
+<script>
+function openTOC(){ document.getElementById('tocDrawer').classList.add('open'); document.getElementById('tocOverlay').classList.add('open'); }
+function closeTOC(){ document.getElementById('tocDrawer').classList.remove('open'); document.getElementById('tocOverlay').classList.remove('open'); }
+</script>
 
 <!-- SECTION 1: PREGNANCY -->
 <div class="section" id="part1">
