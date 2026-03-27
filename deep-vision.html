@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tend — Deep Vision Document</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lato:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fdf6f0;
+  --card:#ffffff;
+  --navy:#1c2b4a;
+  --gold:#c09a5a;
+  --rose:#c94f6d;
+  --sage:#5a9e7c;
+  --text:#2d2d2d;
+  --text2:#5a6070;
+  --border:#eae3da;
+}
+html{font-size:17px;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Lato',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.8;
+  max-width:720px;
+  margin:0 auto;
+  padding:2.5rem 1.5rem 5rem;
+}
+
+h1,h2,h3,h4,blockquote{font-family:'Playfair Display',Georgia,serif}
+
+/* Cover */
+.cover{
+  text-align:center;
+  padding:3rem 1rem 2.5rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:3rem;
+}
+.cover-eyebrow{
+  font-family:'Lato',sans-serif;
+  font-size:.78rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;
+}
+.cover-title{
+  font-size:2.6rem;font-weight:700;color:var(--navy);
+  line-height:1.2;margin-bottom:.75rem;
+}
+.cover-sub{
+  font-size:1.1rem;font-style:italic;color:var(--text2);
+  max-width:480px;margin:0 auto 1.5rem;line-height:1.6;
+}
+.cover-verse{
+  font-size:.92rem;color:var(--gold);font-style:italic;
+  font-family:'Playfair Display',serif;
+}
+
+/* Section headers */
+.section{margin-bottom:3.5rem}
+.section-number{
+  font-family:'Lato',sans-serif;
+  font-size:.72rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.4rem;
+}
+.section-title{
+  font-size:1.9rem;font-weight:700;color:var(--navy);
+  line-height:1.25;margin-bottom:.5rem;
+}
+.section-intro{
+  font-size:1rem;color:var(--text2);font-style:italic;
+  margin-bottom:1.75rem;line-height:1.7;
+  padding-bottom:1.25rem;
+  border-bottom:1px solid var(--border);
+}
+
+h3{
+  font-size:1.25rem;font-weight:600;color:var(--navy);
+  margin:1.75rem 0 .6rem;
+}
+h4{
+  font-size:1rem;font-weight:600;color:var(--gold);
+  margin:1.25rem 0 .4rem;font-style:italic;
+}
+p{margin-bottom:1.1rem}
+
+/* Pull quotes */
+blockquote{
+  border-left:3px solid var(--gold);
+  padding:.85rem 1.25rem;
+  margin:1.75rem 0;
+  background:rgba(192,154,90,.06);
+  border-radius:0 10px 10px 0;
+  font-size:1.05rem;font-style:italic;
+  color:var(--navy);line-height:1.7;
+}
+
+/* Example cards */
+.example{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1.1rem 1.25rem;
+  margin:1.5rem 0;
+  font-size:.93rem;
+}
+.example-label{
+  font-family:'Lato',sans-serif;
+  font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--sage);margin-bottom:.5rem;
+}
+.example-label.rose{color:var(--rose)}
+.example-label.gold{color:var(--gold)}
+.example p{margin-bottom:.5rem;color:var(--text2)}
+.example p:last-child{margin-bottom:0}
+.example strong{color:var(--navy)}
+
+/* Prayer blocks */
+.prayer{
+  background:linear-gradient(135deg,rgba(28,43,74,.04),rgba(192,154,90,.07));
+  border:1px solid rgba(192,154,90,.2);
+  border-radius:14px;
+  padding:1.25rem 1.35rem;
+  margin:1.5rem 0;
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  font-size:.97rem;
+  line-height:1.85;
+  color:var(--text);
+}
+.prayer-label{
+  font-family:'Lato',sans-serif;
+  font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.6rem;font-style:normal;
+}
+
+/* Dividers */
+.divider{
+  text-align:center;color:var(--gold);
+  margin:2.5rem 0;font-size:.85rem;
+  letter-spacing:.4em;
+}
+
+/* Adaptive scenario blocks */
+.adaptive{
+  background:rgba(28,43,74,.04);
+  border-radius:14px;
+  padding:1.1rem 1.25rem;
+  margin:1.25rem 0;
+  font-size:.92rem;
+}
+.adaptive-if{
+  font-family:'Lato',sans-serif;
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--navy);margin-bottom:.35rem;
+}
+.adaptive-then{
+  font-family:'Lato',sans-serif;
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--sage);margin:.5rem 0 .35rem;
+}
+.adaptive p{color:var(--text2);margin-bottom:.35rem}
+.adaptive p:last-child{margin-bottom:0}
+
+/* Day walkthrough */
+.walkthrough{
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  margin:1.5rem 0;
+}
+.walkthrough-header{
+  background:var(--navy);color:#fff;
+  padding:.75rem 1.25rem;
+  font-family:'Playfair Display',serif;
+  font-size:1rem;font-style:italic;
+}
+.walkthrough-body{
+  padding:1.1rem 1.25rem;
+  font-size:.92rem;
+}
+.walkthrough-body p{color:var(--text2);margin-bottom:.6rem}
+.walkthrough-body p:last-child{margin-bottom:0}
+.walkthrough-moment{font-weight:600;color:var(--navy);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;margin-top:.75rem;margin-bottom:.2rem}
+
+a{color:var(--gold);text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-eyebrow">A Vision Document · March 2026</div>
+  <h1 class="cover-title">What Tend Needs to Be</h1>
+  <p class="cover-sub">A deep, unfiltered exploration of what a faith-based, natural-minded woman needs from pregnancy through the first year of motherhood — and how an app can truly walk with her.</p>
+  <div class="cover-verse">"There is no fear in love. But perfect love drives out fear." — 1 John 4:18</div>
+</div>
+
+
+<!-- SECTION 1: PREGNANCY -->
+<div class="section">
+  <div class="section-number">Part One</div>
+  <h2 class="section-title">Pregnancy — What She Actually Needs, Week by Week</h2>
+  <p class="section-intro">Not all pregnancies feel the same. Not all weeks feel the same. An app that treats Week 6 the same as Week 30 has already failed her. Here is what is actually happening — and what she actually needs — as the weeks move.</p>
+
+  <h3>The First Trimester (Weeks 1–13): The Secret Season</h3>
+
+  <p>The first trimester is the loneliest trimester. She may not have told anyone yet. She may be sick every day. She may be terrified. The fear is not just about the pregnancy going wrong — it is deeper than that. It is the fear of becoming someone she does not know yet. Of losing herself. Of not being enough for this.</p>
+
+  <h4>Weeks 4–6: The Body Revolt</h4>
+  <p>This is when nausea arrives, often without warning, and does not leave. She cannot eat the things she used to love. The smell of coffee, which she needed to survive, now makes her gag. She is exhausted in a way she has never experienced — a bone-level exhaustion that sleep does not fix. And yet nothing shows. Nobody knows. She is sick and scared and has to show up to work and pretend everything is fine.</p>
+
+  <p>What she needs from Tend in Week 6: Not a list of symptoms (she already Googled them at 2am). She needs acknowledgment that this is hard, that the hiddenness makes it harder, and that the God who sees in secret is seeing her right now in this bathroom, in this moment. She needs one practical thing — not ten. Ginger tea before she gets out of bed. That's it today.</p>
+
+  <div class="prayer">
+    <div class="prayer-label">Example Prayer — Week 6</div>
+    God, I am so tired and I feel so sick and nobody knows. I am carrying a secret that is also carrying me. I ask You for the grace to get through today — just today. Not all of pregnancy. Not labor. Just this Tuesday. Thank You for seeing me in the quiet, in the ordinary, in the parts of this that aren't beautiful yet. Amen.
+  </div>
+
+  <h4>Weeks 8–10: The Fear Peak</h4>
+  <p>Statistically, she knows this is the highest-risk window. She may have had a loss before, or know someone who has. Every trip to the bathroom is an audit. Every twinge sends her to Google. The anxiety is not irrational — it is love, already fierce and uncontrollable, for someone the size of a raspberry.</p>
+
+  <p>Tend does not dismiss this fear. It does not say "try not to worry!" It sits with her. It says: yes, this is a tender time. Here is what your body is doing. Here is a verse not about not being afraid, but about being held even when you are.</p>
+
+  <h4>Weeks 11–13: The Turning</h4>
+  <p>For many women, the fog begins to lift around Week 11 or 12. Energy returns. Nausea eases. The relief is enormous — but so is the guilt. She worried so much. She didn't enjoy it. She wants to do better. Tend meets her here with gentleness: you were not wrong to be careful with your heart. You carried her through the hardest weeks. That is faithfulness, not failure.</p>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <h3>The Second Trimester (Weeks 14–27): The Opening</h3>
+
+  <p>The second trimester is often when pregnancy becomes real in a felt sense. The belly appears. Movement begins. The fear quiets enough for wonder to move in. But it is also when the physical weight arrives — the back pain, the round ligament aches, the sleep disruption that will only deepen. And it is when the existential questions get louder: Who am I becoming? What kind of mother will I be? What did my own mother give me that I want to pass on — and what did she give me that I want to stop here?</p>
+
+  <h4>Weeks 16–18: The First Movements</h4>
+  <p>The first flutter of movement is one of the most disorienting and sacred moments of pregnancy. It does not feel like the movies. It feels like bubbles. Or a fish. Or a thought that moved. She may not be sure it was real. And then she waits for it again, and again, and one day it is unmistakably a kick and she understands for the first time in her body, not just her mind, that there is a person in there.</p>
+
+  <p>Tend should mark this. Not with a generic "Feeling baby move? Log it!" notification — but with a real recognition that what just happened to her is remarkable. A prayer for the moment. A word about what he hears now. A prompt: did you know he can hear your voice?</p>
+
+  <h4>Weeks 20–22: The Anatomy Scan</h4>
+  <p>The 20-week anatomy scan is terrifying and glorious in equal measure. She will see his face. She will hold her breath while the sonographer measures his heart. For the natural-minded, faith-based woman, this appointment can feel like a collision of two worlds — the clinical and the sacred. Tend can help her walk into that room prepared, not just medically but spiritually.</p>
+
+  <h4>Weeks 24–27: Third Trimester on the Horizon</h4>
+  <p>She is getting bigger faster now. Sleep is becoming a project. The body that felt normal six months ago now requires a system of pillows just to lie down. She is slowing down even as her to-do list is speeding up. Nesting begins — not just the instinct to clean and organize, but a deeper spiritual preparation. She is getting her house in order. Tend can honor that instinct. It is not anxiety. It is love, making room.</p>
+
+  <div class="divider">✦ ✦ ✦</div>
+
+  <h3>The Third Trimester (Weeks 28–40): The Final Stretch</h3>
+
+  <p>The third trimester is where Shameen is right now, and it is the hardest one for most women. The body is enormous and aching. Sleep is broken. The baby is running out of room and making sure she knows it. The due date, which once felt far away, is now close enough to see — and terrifying in its proximity. Birth is no longer theoretical. It is coming.</p>
+
+  <h4>Weeks 28–32: The Weight of It</h4>
+  <p>Back pain. Pelvic pressure. Braxton Hicks contractions that feel alarmingly real. Swelling in feet that no longer fit into normal shoes. Heartburn. A rib that seems to exist solely to be kicked. These are not complaints — they are the physical cost of growing a person, and they are real, and they deserve to be named without drama or dismissal.</p>
+
+  <p>What she needs daily in this window: acknowledgment of what her body is doing. One physical action she can take that will actually help (a pelvic tilt, a specific stretch, lying on her left side). A prayer that understands she is tired. Not tired in a sleepy way — tired in the way that makes you wonder if you have what it takes for what is coming.</p>
+
+  <div class="prayer">
+    <div class="prayer-label">Example Prayer — Week 30</div>
+    Lord, my body aches today. My back has not stopped hurting since Tuesday and I cannot find a comfortable position to sleep. I am trying to be grateful — and I am, I am — but today I am also just tired. I ask You for enough rest to feel human. I ask You to remind me that what I am carrying is worth every ache, even on the days when I need reminding. Hold me tonight. Amen.
+  </div>
+
+  <h4>Weeks 33–36: The Preparation Window</h4>
+  <p>This is when birth preparation becomes urgent. Hospital bag. Birth plan. The conversations she needs to have with her provider. For the natural-minded woman, this window is full of tension — she knows what she wants, but she is afraid of being dismissed or pressured in the room. Tend can help her walk into those appointments with language, with confidence, with the knowledge that her choices are valid and she has the right to advocate for herself.</p>
+
+  <p>Daily content here should shift: less about symptoms, more about preparation. Perineal massage. Birth positions. What to say if she is pressured for interventions she does not want. What to pack. Who to call. What her husband needs to know. This is where Tend becomes a birth coach, not just a companion.</p>
+
+  <h4>Weeks 37–40: The Threshold</h4>
+  <p>She is full term. Every day now feels loaded with possibility and dread. She wakes and wonders: is today the day? Every contraction is analyzed. Every twinge is evaluated. She is living at a threshold — the most significant threshold of her life — and she cannot control when she crosses it.</p>
+
+  <blockquote>"The waiting at the end of pregnancy is one of the most spiritually demanding things a woman will ever do. She has done everything she can do. Now she must surrender to something larger than herself. This is not passivity — it is the hardest kind of faith."</blockquote>
+
+  <p>Tend in the final weeks should hold her in the surrender. Not hurrying her. Not measuring her. Just: you are ready. He is ready. You do not have to do anything today except trust.</p>
+</div>
+
+
+<!-- SECTION 2: BIRTH THRESHOLD -->
+<div class="section">
+  <div class="section-number">Part Two</div>
+  <h2 class="section-title">The Birth Threshold — What Nobody Tells Her</h2>
+  <p class="section-intro">Birth preparation in most apps means a hospital bag checklist. Tend knows it is so much more than that. Here is what she actually needs to know — and what she deserves to hear before she walks into that room.</p>
+
+  <h3>What Nobody Says About Labor</h3>
+  <p>Nobody tells her that early labor can last a long time — sometimes days — and that this is normal and not a sign that something is wrong. Nobody tells her that the urge to push can arrive before she is fully dilated, and that breathing through it is possible but requires everything she has. Nobody tells her that she will likely make sounds she has never made before, and that this is power, not loss of control.</p>
+
+  <p>Nobody tells her that transition — the phase just before pushing — is the hardest and the shortest, and that when she thinks she cannot do it, she is almost certainly almost done. Nobody tells her that the moment the baby arrives, her body will be flooded with a love so overwhelming and physical that she may shake. Nobody tells her that the placenta still has to come, and that there will be people doing things to her body while she is holding her baby, and that this is okay to find disorienting.</p>
+
+  <h3>What the Faith-Based, Natural-Minded Woman Needs Before Birth</h3>
+  <p>She needs to know that pain in birth is not the same as damage. She needs to know that her body was literally designed for this — that the pelvis that feels rigid is made of ligaments that will soften and open. She needs to know that the fear she feels is normal and will not stop her. That women have done this in fields and in wars and in exile and in joy and in faith, and she carries all of that with her.</p>
+
+  <p>She needs specific language for her birth plan that is warm but firm. She needs to know how to say no without apologizing. She needs her husband to understand what she needs from him — and she needs help articulating that, because she may not know herself.</p>
+
+  <div class="example">
+    <div class="example-label gold">What Tend Does: Birth Prep Window (Weeks 35–39)</div>
+    <p>Daily check-in shifts from body symptoms to birth preparation. Each day surfaces one specific thing: today, it's perineal massage and why it matters. Tomorrow, it's a conversation prompt for her partner. The day after, it's a script for what to say if she's pressured for an epidural she doesn't want. Not a library. Not an article. Just: today's one thing.</p>
+  </div>
+
+  <h3>The Birth Plan as a Spiritual Document</h3>
+  <p>For the faith-based woman, her birth plan is not just a medical preferences form. It is a statement of values. It expresses her theology of the body — her belief that birth is sacred, that her baby is a person from the beginning, that she and her husband are the primary decision-makers. Tend can help her write a birth plan that says all of this — not just in medical terms, but in the language of who she is.</p>
+</div>
+
+
+<!-- SECTION 3: POSTPARTUM HER -->
+<div class="section">
+  <div class="section-number">Part Three</div>
+  <h2 class="section-title">Postpartum — Her Recovery</h2>
+  <p class="section-intro">This is the section every other app skips. This is where Tend earns its place. She just did the most physically demanding thing a human body can do. She needs to be cared for — not forgotten.</p>
+
+  <h3>Days 1–3: The Shock</h3>
+  <p>She has just given birth. Her body is altered — bleeding, swollen, stitched if she tore, shaking from the hormonal cascade that comes when the placenta delivers. She is holding a baby she has waited for, and she feels something she did not expect: not pure joy, but a complicated mix of joy and shock and love and terror and a strange grief for the version of herself that existed yesterday.</p>
+
+  <p>This is normal. This is not a failure of love. This is the threshold crossing — the liminal space between who she was and who she is becoming. Tend names this. Gently. Without alarm.</p>
+
+  <div class="example">
+    <div class="example-label rose">What She Needs at 3am on Day 2</div>
+    <p>Her milk has not come in yet. She is trying to breastfeed a baby who is losing weight (normal) and screaming. She is leaking colostrum (normal) and not producing milk yet (normal). She is terrified she is starving her baby. She opens Tend at 3am, exhausted and scared.</p>
+    <p><strong>What Tend says:</strong> "Hey. It's the middle of the night and you're exhausted and you're doing something incredibly hard. Your milk is coming — your body has not forgotten. Colostrum is enough right now. He is not starving. You are not failing. Here is what normal looks like on Day 2. Here is one thing to try. You can do this. God has not left you here alone."</p>
+  </div>
+
+  <h3>Days 4–7: The Milk Comes In</h3>
+  <p>Around Day 3 or 4, milk arrives — usually suddenly and dramatically. Breasts that were tender become hard and engorged. Latching, which was already difficult, becomes harder because the breast is too firm. She may be in real pain. She may be weeping for reasons she cannot explain — the hormonal drop after birth can hit like a wave, bringing a sadness that is physiological, not spiritual failure.</p>
+
+  <p>The baby blues are real. They peak around Day 3–5 and resolve by Day 10 for most women. They feel like: crying at nothing, feeling overwhelmed by small things, a sense of being unable to cope. They are different from PPD — shorter, milder, not persistent. Tend explains this before it happens, so when it does, she recognizes it instead of spiraling.</p>
+
+  <h3>Week 2: The Support Leaves</h3>
+  <p>This is often the hardest week. Her mother went home. Her husband went back to work. The casseroles stopped coming. Everyone assumes she is fine — "settling in" — and the silence of the house, which is also never silent because the baby is always there, settles around her.</p>
+
+  <p>She is also now responsible for this person in a way that feels terrifyingly real. In the hospital, nurses checked on her. In the first week, her mother was there. Now it is just her. And him. And she loves him with her whole self, and she is also drowning a little.</p>
+
+  <div class="prayer">
+    <div class="prayer-label">Example Prayer — Postpartum Week 2</div>
+    God, the house is quiet and I am alone with him and I love him more than I knew love could feel, and I am also so tired I cannot think straight. I feel like everyone expected me to be okay by now and I'm not sure what okay even means anymore. Show me what I need today. Not next month — today. Just today. Give me enough for today. Amen.
+  </div>
+
+  <h3>The 40-Day Rest — Ancient Wisdom for Modern Mothers</h3>
+  <p>Across almost every traditional culture — Islamic, Jewish, Chinese, Ayurvedic, Latin American — there is a practice of a 40-day postpartum rest period for the mother. She does not cook. She does not clean. She does not receive visitors who drain her. She is fed, warmed, and held. Her one job is to recover and to know her baby.</p>
+
+  <p>In modern Western culture, this has been entirely lost. Women are expected to "bounce back." To lose the baby weight. To look put-together. To be grateful and functional and fine. The cost of this cultural failure is measurable in PPD rates, in breastfeeding failure, in relationship strain, in mothers who never fully recovered because they were never given permission to.</p>
+
+  <p>Tend does not just mention this tradition. It builds around it. The first 40 days are a distinct mode in the app. The tone shifts. The daily check-in is not "did you exercise?" but "did you rest?" Not "are you back to normal?" but "what did your body need today?" The nourishment prompts are: bone broth. Warm, cooked foods. Turmeric. Foods that rebuild blood and repair tissue. Not smoothies and salads that require digestion. Warmth.</p>
+
+  <h3>Faith-Based Support for PPD — What Makes It Different</h3>
+  <p>Postpartum depression affects 1 in 5 women. For the faith-based woman, it carries an additional layer: shame. She may feel that if she truly trusted God, she would not feel this way. She may believe that joy is a spiritual obligation and that her inability to feel it consistently means something is wrong with her faith, not just her brain chemistry.</p>
+
+  <p>Tend is categorical and early and often: PPD is not a spiritual failure. It is a medical condition with hormonal, neurological, and situational causes. The Psalms are full of people who were exactly where she is — crying out to God from the pit, unable to feel His presence, exhausted and afraid. Lament is a spiritual practice. It is not the opposite of faith. It is sometimes the deepest expression of it.</p>
+
+  <blockquote>"Where is God? He is in the room with you at 3am. He is in the fact that you got up again. He is in the love you feel even when you cannot feel anything else. He has not left. He is tending to you even as you tend to your baby."</blockquote>
+</div>
+
+
+<!-- SECTION 4: BABY EDUCATION -->
+<div class="section">
+  <div class="section-number">Part Four</div>
+  <h2 class="section-title">Postpartum — Teaching Her About Her Baby</h2>
+  <p class="section-intro">Not a library she has to go find. Information woven into her daily life, arriving exactly when it's relevant — the week she needs it, not the week before and not the week after.</p>
+
+  <h3>The Philosophy: Confidence, Not Anxiety</h3>
+  <p>Most baby education is fear-based. It leads with what can go wrong. It buries her in checklists and warning signs. It treats her like a liability to be managed rather than a mother to be trusted. Tend does the opposite.</p>
+
+  <p>The question is never "is this normal?" in a fearful way. The question is: "what is your baby doing this week, and isn't it remarkable?" Education is delivered as wonder. As invitation. As: here is something fascinating about your baby that you should know because it will make you love him even more than you already do.</p>
+
+  <h3>Week 1–2: Skin to Skin</h3>
+  <p>Most women know "skin to skin is good" as a vague fact. Tend tells her what it actually does: regulates his body temperature more effectively than any incubator. Stabilizes his blood sugar. Tells his nervous system he is safe, which reduces cortisol and allows his brain to develop in the patterns it needs. Establishes milk supply through hormonal signaling. Imprints your scent as safety.</p>
+
+  <p>That is not a checkbox. That is a revelation. She will do skin to skin differently when she understands what she is actually doing.</p>
+
+  <h3>Month 1: What Babies Are Actually Learning</h3>
+  <p>At one month, her baby cannot see far but can see her face clearly at nursing distance. He is already learning the shape of her face, the sound of her voice, the rhythm of her breath. He is not "just sleeping and eating." He is building the neural architecture of his entire life. Every time she responds to his cry, she is teaching him that the world is safe. That people can be trusted. That love is reliable. This is the most important work she will do for the next year.</p>
+
+  <div class="example">
+    <div class="example-label">Example: Today's Baby Note — Month 1, Week 3</div>
+    <p><strong>"Oliver is working on something this week that you can't see but is extraordinary: he's developing the beginnings of social smile. When you make eye contact and talk to him, hold his gaze as long as he'll hold yours. He is practicing the most fundamentally human thing there is — connection. He is learning it from you."</strong></p>
+  </div>
+
+  <h3>Elimination Communication — The Thing She'd Never Google</h3>
+  <p>Elimination Communication (EC) is the practice of learning your baby's cues for elimination and offering a potty — a bowl, a sink, a toilet — so he can go without sitting in waste. It is practiced by the majority of the world's population. It is entirely compatible with Western life. And it is almost completely unknown to modern Western mothers.</p>
+
+  <p>Tend introduces this gently, around Week 3–4, as: "Here is something many natural-minded mothers find meaningful. You don't have to commit to it fully. But here is the signal to look for, and here is what to do if you want to try." No pressure. Just: here is a door.</p>
+
+  <h3>Babywearing — More Than Convenience</h3>
+  <p>Babywearing is often presented as a lifestyle choice or a parenting style. Tend presents it as what it actually is: a physiological support system. Babies who are worn cry 43% less. Their vestibular systems develop better. They are more likely to regulate their own nervous systems as they grow. Wearing him in the fourth trimester — the three months after birth when he is essentially a fetus still, completing his development outside the womb — is one of the most powerful things she can do for his brain.</p>
+
+  <h3>Month 2–3: The Fourth Trimester Ends</h3>
+  <p>Around 12 weeks, something shifts. She will feel it before she can name it. He starts to smile — really smile, socially, at her, because of her. He starts to coo. He starts to have preferences, to turn toward things that interest him, to protest when they're taken away. He is arriving. He is becoming a person she is going to know for the rest of her life. This moment — this emergence — is one of the most moving things Tend should be present for. It should mark it. It should say: look at what you made. Look at who he is becoming. You did this.</p>
+</div>
+
+
+<!-- SECTION 5: ADAPTIVE STRATEGY -->
+<div class="section">
+  <div class="section-number">Part Five</div>
+  <h2 class="section-title">The Adaptive Strategy — How Tend Listens</h2>
+  <p class="section-intro">This is what makes Tend different from every app that has come before it. Tend does not serve content. It responds to her. The difference is everything.</p>
+
+  <h3>The Core Idea</h3>
+  <p>Every morning when she opens Tend, she has the option to give the app a signal. Not a form to fill out — three taps at most. Her mood (one of eight options). Her body (two or three chips from a list). That's it. Thirty seconds. And Tend uses those signals to shape what she sees for the rest of the day.</p>
+
+  <p>Over time, she doesn't even have to tap. Tend learns. It notices that she consistently logs "anxious" on Sunday nights. That she almost always logs "tired" in Weeks 30–33. That when she logs both "anxious" and "Braxton Hicks," she needs reassurance, not information. The app becomes a companion that has been paying attention.</p>
+
+  <h3>Concrete Adaptive Scenarios</h3>
+
+  <div class="adaptive">
+    <div class="adaptive-if">IF: Mood = Anxious + Symptoms = Braxton Hicks (Week 33)</div>
+    <div class="adaptive-then">THEN: Today screen leads with</div>
+    <p><strong>Prayer:</strong> One specifically written for anxiety + physical discomfort, not a general "peace" prayer.</p>
+    <p><strong>Encouragement:</strong> "Braxton Hicks contractions are your uterus rehearsing for what it was made to do. They are not a warning sign. They are preparation. Your body is practicing." Plus: one immediate physical action (lie on left side, drink water, breathe through three contractions and notice they pass).</p>
+    <p><strong>Not shown:</strong> Educational content about labor complications. Not today.</p>
+  </div>
+
+  <div class="adaptive">
+    <div class="adaptive-if">IF: Time = 2:30am + Stage = Day 5 postpartum</div>
+    <div class="adaptive-then">THEN: Today screen becomes Night Mode</div>
+    <p><strong>Visual:</strong> Darker, softer. No notifications. No cheerful morning energy.</p>
+    <p><strong>Lead message:</strong> "Hey. It's the middle of the night and you're awake. That's okay. He needs you and you're here."</p>
+    <p><strong>Baby note:</strong> One specific, calming thing about what's normal at night at Day 5. ("Night waking is biological. He is not trained yet to distinguish day from night — that comes at 6–8 weeks. Right now, he just knows that when he wakes, you come. And you do. That is the whole thing.")</p>
+    <p><strong>Shortcut:</strong> "I need help with breastfeeding" → simplified guide for middle-of-the-night latch troubleshooting, written in 3am language (short sentences, warm, no jargon).</p>
+  </div>
+
+  <div class="adaptive">
+    <div class="adaptive-if">IF: Faith background = Christian + Week = 20 (Anatomy scan week)</div>
+    <div class="adaptive-then">THEN:</div>
+    <p><strong>Today's note:</strong> "Today you might see the face God has been designing. Go in with open hands. Whatever you see on that screen, you are not alone in the room."</p>
+    <p><strong>Verse:</strong> Psalm 139:13–16 — the whole passage, not just verse 14. "Your eyes saw my unformed body; all the days ordained for me were written in your book before one of them came to be."</p>
+  </div>
+
+  <div class="adaptive">
+    <div class="adaptive-if">IF: Faith background = Spiritual (non-religious) + same scenario</div>
+    <div class="adaptive-then">THEN:</div>
+    <p><strong>Today's note:</strong> "Today you might see his face for the first time. Whatever you believe about where life comes from, there is something in that room today that will change you. Go in with open hands."</p>
+    <p><strong>No verse. Instead:</strong> A reflection on wonder — the mathematics of what is happening, the improbability of this particular life.</p>
+  </div>
+
+  <div class="adaptive">
+    <div class="adaptive-if">IF: Mood = "Hard day" logged 3+ times this week (postpartum Month 2)</div>
+    <div class="adaptive-then">THEN:</div>
+    <p><strong>Gentle check-in:</strong> "You've had a few hard days this week. That's worth paying attention to. How are you really doing?" Two options: "I'm okay, just tired" or "I think I need support." No alarm. No clinical language. Just: we noticed, and we care.</p>
+    <p>If she taps "I think I need support": a warm, non-clinical description of PPD and baby blues, what they look like, how to know the difference, and specific first steps — including talking to her provider, but also: calling a friend, a specific prayer, a reminder that asking for help is not weakness.</p>
+  </div>
+
+  <h3>What the Adaptive Strategy Is Not</h3>
+  <p>It is not surveillance. It is not data collection for advertising. It is not an algorithm that serves engagement. The data lives on her device. The goal is not to keep her in the app longer — it is to make her time in the app so well-spent that she trusts it completely and comes back because it has earned that trust.</p>
+</div>
+
+
+<!-- SECTION 6: THE THINGS NOBODY SAYS -->
+<div class="section">
+  <div class="section-number">Part Six</div>
+  <h2 class="section-title">The Things Nobody Says</h2>
+  <p class="section-intro">A companion that only shows up for the beautiful parts is not a companion. Tend holds space for all of it. With grace. Without flinching. Without clinical distance.</p>
+
+  <h3>Identity Loss — "I Don't Know Who I Am Anymore"</h3>
+  <p>No app talks about this. She may have been a professional, a wife, a friend, a woman with a specific way of moving through the world — and now, overnight, she is also someone's mother, and that someone needs everything she has. The person she was before is not gone. But she is different. And nobody prepared her for the grief that comes with that.</p>
+
+  <p>Tend names this. Specifically. Not as pathology but as rite of passage. In Portuguese, there is a word for this — <em>matrescence</em> — the process of becoming a mother, as profound a transformation as adolescence. You are not losing yourself. You are expanding. But expansion hurts, and it is allowed to hurt.</p>
+
+  <h3>Relationship Strain — "We Are Not Okay"</h3>
+  <p>Studies consistently show that marital satisfaction drops significantly in the first year after a baby. This is not a sign of a bad marriage. It is the predictable result of two people who are both sleep-deprived, identity-shifting, and having to renegotiate everything they thought they knew about their relationship. The couples who do best are the ones who know this is coming.</p>
+
+  <p>Tend has a partner feature — not just "share your due date" but actual content for her husband. What she needs from him this week. What he might be feeling that he hasn't said. How to hold each other through this even when you don't have the energy to hold anything.</p>
+
+  <h3>Breastfeeding — When It Doesn't Work</h3>
+  <p>Nobody prepares her for the possibility that breastfeeding might not work. The natural-minded community, in its well-intentioned enthusiasm, can make a woman who cannot breastfeed feel like a failure. A bad mother. Someone whose body let her baby down.</p>
+
+  <p>Tend will not do this. Tend will say: fed is loved. If breastfeeding is not working, here is everything we know to try. And if it still doesn't work, here is a prayer for the grief of that, and a reminder that what your baby needs most is you — alive, present, and not devastated.</p>
+
+  <h3>Birth Trauma — "That Was Not What I Planned"</h3>
+  <p>Birth does not always go the way she planned. Emergency C-sections happen. Interventions she refused happen anyway. She may have been pressured in the room and unable to advocate for herself in the moment. She may have been separated from her baby. She may have been in more pain than she knew was possible. She may have been afraid she was going to die.</p>
+
+  <p>Birth trauma is real and underdiagnosed. Tend creates space to name it — weeks and months later, when she is safe enough to look at it. A quiet prompt: "How do you feel about how your birth went? Do you feel like you've processed it?" Not a form. A door.</p>
+
+  <h3>Grief — When Pregnancy or Birth Does Not End in a Living Baby</h3>
+  <p>Tend will eventually have a grief mode. For loss at any stage — early miscarriage, late loss, stillbirth. It will not try to comfort too quickly. It will not say anything that starts with "at least." It will sit in the silence and say: this loss is real. Your baby was real. You are allowed to grieve as long as you need to. God is in this grief with you.</p>
+
+  <p>This is a later feature — but it is named here so it is never an afterthought. It belongs in the heart of what Tend is.</p>
+</div>
+
+
+<!-- SECTION 7: A DAY IN THE APP -->
+<div class="section">
+  <div class="section-number">Part Seven</div>
+  <h2 class="section-title">What Daily Life in Tend Actually Looks Like</h2>
+  <p class="section-intro">Four real days. Four real moments. This is what she experiences.</p>
+
+  <div class="walkthrough">
+    <div class="walkthrough-header">Day in Tend: Week 8 Pregnant</div>
+    <div class="walkthrough-body">
+      <div class="walkthrough-moment">7:14am — She opens the app before getting out of bed</div>
+      <p>She is nauseous. She knows she will feel better if she eats something before she stands up. The screen knows she is in Week 8. It leads not with "Good morning!" but with: <em>"Week 8. Still in it. Here's your one thing for this morning."</em> That one thing: a few crackers before you stand. A slow breath. Then stand.</p>
+      <div class="walkthrough-moment">Mood check</div>
+      <p>She taps "Tired" and "Nauseous." The prayer that loads is not about joy. It is about making it through the day. Specific. Short. Honest.</p>
+      <div class="walkthrough-moment">She closes the app after 3 minutes</div>
+      <p>She does not feel fixed. But she feels less alone. She feels like something saw her where she was this morning and didn't ask her to be somewhere else.</p>
+    </div>
+  </div>
+
+  <div class="walkthrough">
+    <div class="walkthrough-header">Day in Tend: Week 28 Pregnant (Third Trimester)</div>
+    <div class="walkthrough-body">
+      <div class="walkthrough-moment">6:45am — After trading session, before the workday</div>
+      <p>She is tired. Her back hurts. She has a full day of work ahead. She opens Tend and sees: Week 28. The current week dot pulses on the Journey screen. On Today, she sees a gentle acknowledgment of where she is physically — third trimester weight, lower back, how to position her chair for work. Not a lecture. Just: here is how to survive today's hours at a desk.</p>
+      <div class="walkthrough-moment">Today's prayer</div>
+      <p>About the tension between the work she loves and the body that is asking her to slow down. About the grace to do both without losing herself in either.</p>
+      <div class="walkthrough-moment">Oliver's note for the week</div>
+      <p>"His eyes are open now, blinking in the warm dark. He is dreaming. Scientists are not sure what babies dream about in the womb — some think it may be the sounds and sensations they have already experienced. Which means he may be dreaming about you."</p>
+      <div class="walkthrough-moment">She closes the app</div>
+      <p>She starts her workday feeling like someone checked on her. Something held her in her morning before the world made demands.</p>
+    </div>
+  </div>
+
+  <div class="walkthrough">
+    <div class="walkthrough-header">Day in Tend: Day 5 Postpartum</div>
+    <div class="walkthrough-body">
+      <div class="walkthrough-moment">3:17am</div>
+      <p>Oliver has been awake for two hours. Her milk came in yesterday and her breasts are hard and the latch is difficult and she is crying and she does not know if she is crying because of the pain or because of the hormones or because she is afraid she is failing at this.</p>
+      <div class="walkthrough-moment">She opens Tend</div>
+      <p>Night mode. Soft, dark screen. First thing it says: <em>"It's 3am. You're doing it. That's the whole thing right now — just doing it."</em></p>
+      <p>Then: what's normal on Day 5. (Engorgement. Emotional crash. Latch difficulty. All of this. All normal.) Then: one thing to try for the latch right now. Then: the 40-day rest reminder — tomorrow, receive one thing from someone. Let someone bring you food. That is your one task tomorrow.</p>
+      <div class="walkthrough-moment">Prayer for 3am</div>
+      <p><em>"God, I am in the middle of the night with a baby who needs me and a body that is learning and a heart that is very full and very overwhelmed. I am not asking You to make this easy. I am asking You to be here with me in it. Amen."</em></p>
+    </div>
+  </div>
+
+  <div class="walkthrough">
+    <div class="walkthrough-header">Day in Tend: Month 2 Postpartum</div>
+    <div class="walkthrough-body">
+      <div class="walkthrough-moment">8:30am — Oliver is in the carrier. She has both hands.</div>
+      <p>She opens Tend while he sleeps against her chest. The app knows it's Month 2. Today's baby note: <em>"He is beginning to develop something this week — the social smile. When you catch his eye and hold his gaze, he is practicing the most fundamentally human thing there is: connection. He is learning it from you. You are his whole world, and he is starting to show you he knows it."</em></p>
+      <div class="walkthrough-moment">Her recovery check-in</div>
+      <p>How is her body? One question. She answers. Today Tend surfaces: pelvic floor. Not "have you done your Kegels?" but: "Your pelvic floor has been through something significant. Here is one gentle thing you can do today that will matter a year from now." One thing. Not a program. Just one thing.</p>
+      <div class="walkthrough-moment">She closes the app in under 5 minutes</div>
+      <p>She feels seen as a mother. Seen as a body that is recovering. Seen as a person who is still here, still becoming. She feels like Tend has been paying attention — not just tracking her, but actually noticing her.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- CLOSING -->
+<div class="section">
+  <div class="section-number">In Closing</div>
+  <h2 class="section-title">What Tend Is, at Its Heart</h2>
+
+  <p>Tend is not an information delivery system. Information is free and everywhere. She already has too much of it.</p>
+
+  <p>Tend is a presence. A companion that has been thinking about her specifically — her week, her body, her faith, her hard day — and shows up with something that fits. It is the wise friend who has walked this road. It is the doula who texts her at 3am. It is the mother who knew what to say. It is the prayer that found the words she could not find herself.</p>
+
+  <p>It is the app that does not abandon her when she gives birth.</p>
+
+  <p>It is the app that, when she opens it on a hard day in Month 2 when everyone has moved on and she is still in the thick of it, says: <em>I am still here. This still matters. You still matter. How are you today?</em></p>
+
+  <blockquote>"The goal was never to build an app. The goal was to build a companion. There is a woman out there — faith-filled, natural-minded, doing the most extraordinary thing a human body can do — who deserves to feel held, not managed. Who deserves wisdom, not disclaimers. Who deserves to be spoken to like she is whole and sacred and capable and loved. Tend exists to be that voice."</blockquote>
+
+  <p style="text-align:center;color:var(--gold);font-family:'Playfair Display',serif;font-style:italic;margin-top:2rem;font-size:1.1rem">Build this. The woman waiting for it deserves it.</p>
+</div>
+
+<div style="text-align:center;color:var(--text2);font-size:.8rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+  Tend — Deep Vision Document · March 27, 2026<br>
+  Written for Shameen Higney and every woman like her.
+</div>
+
+</body>
+</html>
