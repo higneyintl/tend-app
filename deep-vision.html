@@ -184,6 +184,29 @@ blockquote{
 .walkthrough-moment{font-weight:600;color:var(--navy);font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;margin-top:.75rem;margin-bottom:.2rem}
 
 a{color:var(--gold);text-decoration:none}
+
+/* Index */
+.index{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:1.5rem 1.75rem;
+  margin-bottom:3rem;
+}
+.index-title{
+  font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;
+  color:var(--navy);margin-bottom:1rem;
+}
+.index-group{margin-bottom:1rem}
+.index-group-label{
+  font-family:'Lato',sans-serif;font-size:.7rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:.4rem;
+}
+.index-links{list-style:none}
+.index-links li{padding:.2rem 0;border-bottom:1px solid var(--border)}
+.index-links li:last-child{border-bottom:none}
+.index-links a{font-size:.92rem;color:var(--navy);text-decoration:none;display:flex;justify-content:space-between;align-items:center}
+.index-links a:hover{color:var(--gold)}
+.index-links a::after{content:'→';color:var(--gold);font-size:.85rem}
 </style>
 </head>
 <body>
@@ -196,8 +219,37 @@ a{color:var(--gold);text-decoration:none}
 </div>
 
 
+<!-- INDEX -->
+<div class="index" id="index">
+  <div class="index-title">Table of Contents</div>
+
+  <div class="index-group">
+    <div class="index-group-label">Content Strategy — Today Tab</div>
+    <ul class="index-links">
+      <li><a href="#part1">Part One — Pregnancy: What She Needs Week by Week</a></li>
+      <li><a href="#part2">Part Two — The Birth Threshold</a></li>
+      <li><a href="#part3">Part Three — Postpartum: Her Recovery</a></li>
+      <li><a href="#part4">Part Four — Postpartum: Baby Education</a></li>
+      <li><a href="#part5">Part Five — The Adaptive Strategy</a></li>
+      <li><a href="#part6">Part Six — The Things Nobody Says</a></li>
+      <li><a href="#part7">Part Seven — A Day in the App</a></li>
+    </ul>
+  </div>
+
+  <div class="index-group">
+    <div class="index-group-label">Content Strategy — All Other Tabs</div>
+    <ul class="index-links">
+      <li><a href="#part8">Part Eight — The Journey Tab</a></li>
+      <li><a href="#part9">Part Nine — The Guide Tab</a></li>
+      <li><a href="#part10">Part Ten — The Circle Tab</a></li>
+      <li><a href="#part11">Part Eleven — Onboarding & Settings</a></li>
+      <li><a href="#part12">Part Twelve — The Full App Framework</a></li>
+    </ul>
+  </div>
+</div>
+
 <!-- SECTION 1: PREGNANCY -->
-<div class="section">
+<div class="section" id="part1">
   <div class="section-number">Part One</div>
   <h2 class="section-title">Pregnancy — What She Actually Needs, Week by Week</h2>
   <p class="section-intro">Not all pregnancies feel the same. Not all weeks feel the same. An app that treats Week 6 the same as Week 30 has already failed her. Here is what is actually happening — and what she actually needs — as the weeks move.</p>
@@ -272,7 +324,7 @@ a{color:var(--gold);text-decoration:none}
 
 
 <!-- SECTION 2: BIRTH THRESHOLD -->
-<div class="section">
+<div class="section" id="part2">
   <div class="section-number">Part Two</div>
   <h2 class="section-title">The Birth Threshold — What Nobody Tells Her</h2>
   <p class="section-intro">Birth preparation in most apps means a hospital bag checklist. Tend knows it is so much more than that. Here is what she actually needs to know — and what she deserves to hear before she walks into that room.</p>
@@ -298,7 +350,7 @@ a{color:var(--gold);text-decoration:none}
 
 
 <!-- SECTION 3: POSTPARTUM HER -->
-<div class="section">
+<div class="section" id="part3">
   <div class="section-number">Part Three</div>
   <h2 class="section-title">Postpartum — Her Recovery</h2>
   <p class="section-intro">This is the section every other app skips. This is where Tend earns its place. She just did the most physically demanding thing a human body can do. She needs to be cared for — not forgotten.</p>
@@ -346,7 +398,7 @@ a{color:var(--gold);text-decoration:none}
 
 
 <!-- SECTION 4: BABY EDUCATION -->
-<div class="section">
+<div class="section" id="part4">
   <div class="section-number">Part Four</div>
   <h2 class="section-title">Postpartum — Teaching Her About Her Baby</h2>
   <p class="section-intro">Not a library she has to go find. Information woven into her daily life, arriving exactly when it's relevant — the week she needs it, not the week before and not the week after.</p>
@@ -383,7 +435,7 @@ a{color:var(--gold);text-decoration:none}
 
 
 <!-- SECTION 5: ADAPTIVE STRATEGY -->
-<div class="section">
+<div class="section" id="part5">
   <div class="section-number">Part Five</div>
   <h2 class="section-title">The Adaptive Strategy — How Tend Listens</h2>
   <p class="section-intro">This is what makes Tend different from every app that has come before it. Tend does not serve content. It responds to her. The difference is everything.</p>
@@ -439,7 +491,7 @@ a{color:var(--gold);text-decoration:none}
 
 
 <!-- SECTION 6: THE THINGS NOBODY SAYS -->
-<div class="section">
+<div class="section" id="part6">
   <div class="section-number">Part Six</div>
   <h2 class="section-title">The Things Nobody Says</h2>
   <p class="section-intro">A companion that only shows up for the beautiful parts is not a companion. Tend holds space for all of it. With grace. Without flinching. Without clinical distance.</p>
@@ -472,7 +524,7 @@ a{color:var(--gold);text-decoration:none}
 
 
 <!-- SECTION 7: A DAY IN THE APP -->
-<div class="section">
+<div class="section" id="part7">
   <div class="section-number">Part Seven</div>
   <h2 class="section-title">What Daily Life in Tend Actually Looks Like</h2>
   <p class="section-intro">Four real days. Four real moments. This is what she experiences.</p>
@@ -529,6 +581,264 @@ a{color:var(--gold);text-decoration:none}
   </div>
 </div>
 
+
+<!-- SECTION 8: JOURNEY TAB -->
+<div class="section" id="part8">
+  <div class="section-number">Part Eight</div>
+  <h2 class="section-title">The Journey Tab — Her Story, Written One Week at a Time</h2>
+  <p class="section-intro">The Journey tab is the memory of the app. It is where she becomes the narrator of her own story — not a patient being tracked, but a woman building a record of something sacred. It should feel like a journal she didn't know she was keeping until she scrolled back and realized she had written something beautiful.</p>
+
+  <h3>What It Is</h3>
+  <p>A single vertical timeline running the full length of pregnancy and into the first year postpartum. Soft gold line. Organic, hand-drawn quality. Week markers as small circles — sage for Trimester 1, amber for Trimester 2, rose for Trimester 3. Current week pulses gently. Completed weeks are filled. Future weeks wait quietly — present but undemanding, like chapters not yet read.</p>
+
+  <p>On first load, the timeline scrolls to her current week and centers it. She can move in both directions — backward through what she has carried, forward to what is coming. A floating indicator shows which week she is viewing as she scrolls.</p>
+
+  <h3>The Four Layers of Journey</h3>
+
+  <h4>Layer 1 — The Timeline (Always Visible)</h4>
+  <p>The spine of the tab. Every week has a title, a size comparison, and a dot. When she taps a completed week, a card expands: baby development, size illustration, her consistency dots from that week (did she show up?), and — if she wrote a reflection — the first line of it. Milestone weeks (12, 20, 24, 37) have a golden seal instead of a plain dot. Tapping them reveals a reverent celebration card, not confetti. The tone is: you have done something extraordinary, and we are marking it seriously.</p>
+
+  <h4>Layer 2 — Weekly Reflection</h4>
+  <p>One question per week. Not a survey. A single, thoughtful question that invites her to pause and look at what this week actually held. The questions rotate and are calibrated to what is actually happening developmentally and emotionally at that point in pregnancy or postpartum.</p>
+
+  <div class="example">
+    <div class="example-label">Example Reflection Questions by Week</div>
+    <p><strong>Week 8:</strong> "Is there something you haven't let yourself say out loud yet about this pregnancy?"</p>
+    <p><strong>Week 20:</strong> "When you saw him on the scan, what did you feel that you didn't expect?"</p>
+    <p><strong>Week 35:</strong> "What are you most afraid of about birth? Say it here — out loud, even if just to yourself."</p>
+    <p><strong>Week 37:</strong> "What do you want to remember about who you were before he arrives?"</p>
+    <p><strong>Postpartum Day 14:</strong> "What has surprised you most about yourself since he was born?"</p>
+    <p><strong>Month 2:</strong> "Who are you becoming? What do you see in yourself that wasn't there before?"</p>
+  </div>
+
+  <p>Her answers are private. They are stored on her device. Over time, they become her memoir — a record of who she was during the most transformative season of her life. She will want to read these when Oliver is five. When he is fifteen. She will give them to him someday.</p>
+
+  <h4>Layer 3 — Mood + Body Log (Quick, Daily)</h4>
+  <p>Accessible from Journey but feeding into the adaptive strategy. One tap: how is she today? One more tap: what is her body doing? This is not a medical log. It is a record of her experience. It also teaches the app. After three weeks, Tend knows her patterns. It knows she is always tired on Thursdays. It knows Braxton Hicks correlate with her most anxious days. It uses this to serve her better.</p>
+
+  <h4>Layer 4 — The Postpartum Continuation</h4>
+  <p>The timeline does not stop at Week 40. It flows past birth and into a new section — "Oliver Is Here" — written in Playfair Display italic. The tone shifts: warmer, softer. Day markers for Days 1–14, then weekly through Month 3, then monthly through Year 1. The postpartum timeline mirrors the pregnancy timeline in structure but has its own identity: she has been through something and come out the other side more tender, and the app knows it.</p>
+
+  <h3>What Journey Is Not</h3>
+  <p>It is not a symptom tracker in disguise. It is not data collection. It does not measure her or grade her or compare her to other women. There are no averages. No "you're tracking above/below normal." She is not a data point. She is a woman with a story, and Journey is where that story lives.</p>
+
+  <div class="prayer">
+    <div class="prayer-label">The Feeling When She Scrolls Back Through Journey at Month 3</div>
+    She opens the timeline and scrolls back to Week 8 and reads what she wrote: "I don't know if I'm ready for this." And then Week 20: "Today I saw his face and I understood something I didn't have words for before." And she is holding him right now, asleep on her chest, and she realizes she has been writing a love story without knowing it. That is Journey.
+  </div>
+</div>
+
+<!-- SECTION 9: GUIDE TAB -->
+<div class="section" id="part9">
+  <div class="section-number">Part Nine</div>
+  <h2 class="section-title">The Guide Tab — Wisdom When She Goes Looking</h2>
+  <p class="section-intro">The Guide is not a feed. It does not push content at her. It waits. It is the library she comes to when she has a question, a curiosity, or a need she wants to go deeper on. It is organized around how she actually thinks — not by medical category but by life experience.</p>
+
+  <h3>The Philosophy</h3>
+  <p>Most pregnancy apps have a "learn" section that is essentially a repurposed medical website. It leads with warning signs. It is written in the passive voice. It has a disclaimer on every page. Tend's Guide reads like it was written by a wise, knowledgeable friend who trusts her completely — because it was.</p>
+
+  <p>The Guide is where she goes on Sunday afternoon when she has a quiet hour. Where she reads the full babywearing guide because she wants to understand it properly, not just use it. Where she finds the birth plan template and the conversation scripts and the herbal support section that her OB will never mention. The Guide is her education — deep, respectful, natural-first, faith-aware.</p>
+
+  <h3>The Three Sections</h3>
+
+  <h4>Birth Your Way 🌊</h4>
+  <p>Every birth setting is covered without hierarchy. Hospital birth, birth center, home birth — each gets its own full section, written with equal warmth and respect. No judgment. No implicit superiority of one over another. The sections cover: what to expect, how to prepare, who to have in the room, what to say if you want to change your plan, how to recover in that setting specifically.</p>
+
+  <p>This section also contains the birth plan builder — not a checkbox form, but a guided conversation. She answers five questions about her values and the builder generates language she can bring to her provider. Warm but firm. Specific. Hers.</p>
+
+  <div class="example">
+    <div class="example-label">Guide Content: Birth Your Way</div>
+    <p><strong>Hospital Birth:</strong> Your Rights in the Room · How to Advocate for Your Birth Plan · If You're Pressured for an Epidural · What Delayed Cord Clamping Looks Like in a Hospital · The Golden Hour — How to Protect It · If You Need a C-Section: What Is Within Your Control</p>
+    <p><strong>Birth Center:</strong> What to Look for in a Midwife · Water Birth Preparation · When Transfer Becomes Necessary and How to Feel at Peace with It</p>
+    <p><strong>Home Birth:</strong> Building Your Birth Team · What Your Midwife Brings · Preparing Your Space · After Birth at Home — The First Hours</p>
+  </div>
+
+  <h4>Natural Living 🌿</h4>
+  <p>This is the section that does not exist anywhere else. Written from a place of deep respect for the natural-minded woman's choices — not as "alternative" options but as the default wisdom of most of human history.</p>
+
+  <div class="example">
+    <div class="example-label">Guide Content: Natural Living</div>
+    <p><strong>Elimination Communication:</strong> Full guide based on Andrea Olson's framework. What it is, why it works, how to start, what the cues look like, what to do when you miss one (nothing — just keep going). Written without judgment toward those who choose not to. Just: here is a door, and here is everything you need to walk through it.</p>
+    <p><strong>Babywearing:</strong> The science of why it matters (neurological development, cortisol regulation, attachment). How to choose a carrier. Positions by age. Safety. When to stop wearing and when not to.</p>
+    <p><strong>Herbal Support:</strong> What is safe in pregnancy (ginger, red raspberry leaf, nettle), what to avoid, how to use food as medicine in postpartum recovery. Written with Lutfiya's toxicology background — specific, vetted, trustworthy.</p>
+    <p><strong>Non-Toxic Nursery:</strong> What to look for and what to avoid. VOCs in paint. Flame retardants in mattresses. What "organic" actually means on a label. Practical, not alarmist.</p>
+    <p><strong>Traditional Postpartum Healing:</strong> The 40-day rest. Bone broth. Belly binding. Sitz baths. Warm foods. Why traditional cultures knew something Western medicine forgot.</p>
+  </div>
+
+  <h4>Faith & Motherhood ✝️</h4>
+  <p>For the woman whose faith is not separate from her mothering but woven through it. This section does not treat faith as a feature — it treats it as the lens through which everything else is understood.</p>
+
+  <div class="example">
+    <div class="example-label">Guide Content: Faith & Motherhood</div>
+    <p><strong>Birth as Sacred:</strong> A theology of birth — not pain as curse, but birth as threshold. What it means that God chose to enter the world through a woman's body. What it means that the pain of birth is also the passage to new life.</p>
+    <p><strong>Testimonies:</strong> Real stories from women who gave birth in faith — in hospital rooms and at home, in fear and in peace, with interventions and without. The point is not to promote one kind of birth but to say: God was there. In all of them.</p>
+    <p><strong>Scripture for the Hard Days:</strong> Not a verse to make her feel better. A collection of honest scriptures — the Psalms of lament, Hannah's prayer, Mary's fear, Elizabeth's joy — for the full range of what she might be feeling.</p>
+    <p><strong>Praying Over Your Baby:</strong> How to build a prayer practice for her child before birth and after. Simple, specific, not performance. The kind of prayer a mother whispers over a sleeping baby at 2am when the house is quiet.</p>
+  </div>
+
+  <h3>How Guide Evolves</h3>
+  <p>In the first version (MVP), Guide has 10–15 deep articles. Over time, it grows. New articles are added as she moves through pregnancy and into postpartum — the Guide she sees at Week 8 is slightly different from the one she sees at Week 35. Content is surfaced based on where she is, but nothing is hidden. She can always go looking.</p>
+</div>
+
+<!-- SECTION 10: CIRCLE TAB -->
+<div class="section" id="part10">
+  <div class="section-number">Part Ten</div>
+  <h2 class="section-title">The Circle Tab — Community That Actually Feels Safe</h2>
+  <p class="section-intro">The Circle is not a forum. It is not 80,000 strangers. It is 30–50 women due the same month, values-aligned, who will walk through birth and postpartum together. It is the most emotionally powerful feature in Tend — and the one that will generate more word-of-mouth than anything else.</p>
+
+  <h3>Why Community Matters — And Why Every Existing App Gets It Wrong</h3>
+  <p>BabyCenter, What to Expect, the Reddit pregnancy communities — they all fail in the same way. Open forums become toxic. The loudest voices are the most fearful ones. A first-time mother asking an innocent question gets eight conflicting answers and a lecture about what she's doing wrong. She closes the app feeling worse than when she opened it.</p>
+
+  <p>The antidote is not no community. The antidote is the right community. Small enough to feel known. Aligned enough to feel safe. Structured enough to stay healthy.</p>
+
+  <h3>How the Circle Works</h3>
+
+  <h4>Formation</h4>
+  <p>When she completes onboarding, she is placed in a Circle of women due in her same month who have selected similar faith background and parenting style. The Circle is curated, not algorithmic. There is a soft matching process — she will not be placed with women whose values are radically different from hers. The goal is not an echo chamber but a safe harbor.</p>
+
+  <h4>The Daily Prompt</h4>
+  <p>Every day, one conversation prompt appears for the whole Circle. It is specific to where they all are in pregnancy or postpartum. It invites honest sharing without requiring it. Some days, only three women respond. Some days, the conversation runs all day. Both are fine.</p>
+
+  <div class="example">
+    <div class="example-label">Example Daily Circle Prompts</div>
+    <p><strong>Week 28:</strong> "What is one physical thing you are doing to take care of yourself right now — even if it's small?"</p>
+    <p><strong>Week 35:</strong> "What is one thing you are afraid of about birth that you haven't said out loud yet?"</p>
+    <p><strong>Week 40:</strong> "To anyone who has already had their baby: what do you wish you had known? To anyone still waiting: how are you holding up?"</p>
+    <p><strong>Postpartum Day 10:</strong> "What does your hardest hour of the day look like right now?"</p>
+    <p><strong>Month 2:</strong> "What is something your baby did this week that made you feel like you knew him?"</p>
+  </div>
+
+  <h4>The Prayer Wall</h4>
+  <p>This is the highest-engagement feature in every faith-based app ever built, and Tend will be no exception. The Prayer Wall is anonymous. She posts a prayer request — one or two sentences. No names, no details required. Others in the Circle can respond only with a prayer hand emoji and a written prayer. No advice. No opinions. No "have you tried...?" Just: I prayed for you.</p>
+
+  <p>This feature will be screenshotted and shared. It will be the thing she tells her friends about. "There are 40 women in my app who prayed for me at 3am when I posted that I was scared." That is what no other app has ever built.</p>
+
+  <h4>Milestone Celebrations</h4>
+  <p>When a baby arrives, the Circle is notified — gently, warmly. Not a push notification. A soft card that appears in the Circle tab: "Someone in your Circle welcomed their baby." If she wants to share, she can post a birth announcement. The Circle responds. This is the moment when 30–50 women who have been walking together for nine months celebrate one of their own crossing the threshold. It is sacred. It should feel that way.</p>
+
+  <h4>The Postpartum Transition</h4>
+  <p>The Circle does not dissolve after birth. It transitions. The same women who shared their fears in Week 35 are now sharing their 3am moments and their first real smiles and their questions about when the bleeding stops. They have been through something together. That bond does not require maintenance — it exists. Tend simply keeps the space open for them to use it.</p>
+
+  <h3>Moderation Philosophy</h3>
+  <p>The Circle is lightly moderated. There are no community managers in the traditional sense. The structure itself does the moderation work: small group size, one prompt per day, prayer wall limited to prayers only. There is almost no surface area for the kind of toxicity that infects large forums. If someone is consistently unkind, she is moved to a different Circle or removed. This has happened maybe twice.</p>
+
+  <blockquote>"The Circle is the feature she tells her sister about. It is the reason she recommends Tend to the new mother at church. It is the thing she will still think about when her child is in kindergarten. Build it with that weight in mind."</blockquote>
+</div>
+
+<!-- SECTION 11: ONBOARDING & SETTINGS -->
+<div class="section" id="part11">
+  <div class="section-number">Part Eleven</div>
+  <h2 class="section-title">Onboarding & Settings — The Foundation of Everything</h2>
+  <p class="section-intro">Onboarding is not a form. It is the first conversation she has with Tend. It establishes the relationship. It should take two minutes, feel warm, and leave her feeling like Tend already understands her — because it does.</p>
+
+  <h3>The Onboarding Flow</h3>
+
+  <h4>Screen 1 — Welcome</h4>
+  <p>No features list. No "get started." Just: a full-screen welcome in Playfair Display italic: <em>"You are doing something extraordinary. We are here to walk with you."</em> The core verse. A single button: "Let's begin."</p>
+
+  <h4>Screen 2 — Her Name</h4>
+  <p>"What should we call you?" Not "Enter your name." Just: what do you want to be called here? From this point forward, Tend calls her by name. Every prayer. Every encouragement. Not a template — a relationship.</p>
+
+  <h4>Screen 3 — Where She Is</h4>
+  <p>Pregnant or postpartum? If pregnant: due date or week. If she enters a due date, Tend calculates her week. If she doesn't know her due date, she enters her week. No judgment for not knowing. One option for loss — handled with grace, leading to a different path. If postpartum: baby's birth date.</p>
+
+  <h4>Screen 4 — Faith Background</h4>
+  <p>Not a dropdown. A gentle question: "How does faith show up in your life?" Four options, warmly worded: "Faith is central to everything for me." / "I have a spiritual life but it's more personal." / "I'm exploring — faith feels important but I'm not sure what I believe." / "I'd prefer a secular experience."</p>
+
+  <p>This single answer shapes the entire app. Prayer language, scripture references, tone of encouragements — all adapted. No one feels like the app wasn't made for them.</p>
+
+  <h4>Screen 5 — Parenting Style</h4>
+  <p>"How do you think about caring for your baby and your body?" Three options: "Natural / crunchy — I lean toward traditional, holistic approaches." / "Mainstream — I trust conventional medical guidance." / "A mix — I decide based on what feels right." This shapes Guide content, daily tips, and the framing of everything from birth to feeding to postpartum recovery.</p>
+
+  <h4>Screen 6 — Baby's Name</h4>
+  <p>"Does your baby have a name yet?" Optional. If she shares it, the app uses it from this point forward. Oliver is not "your baby." He is Oliver. That one change — from "your baby" to his name — is the difference between an app and a companion.</p>
+
+  <h4>Screen 7 — The Promise</h4>
+  <p>Final onboarding screen. Simple. <em>"Tend is yours. Your data stays on your device. We will never sell what you share here. We will not abandon you after birth. We are here for the whole journey."</em> Then: "Open Tend."</p>
+
+  <h3>Settings — Her Control</h3>
+  <p>Settings is not an afterthought. It is where she goes to update as her journey changes and to personalize what she has not yet personalized. Key settings:</p>
+
+  <div class="example">
+    <div class="example-label">Settings Sections</div>
+    <p><strong>My Journey:</strong> Update her name, due date, baby's name, faith background, parenting style. These can change — Tend adapts without judgment.</p>
+    <p><strong>Notifications:</strong> Opt into gentle morning check-in (no alarm, just a soft reminder). Opt into Circle notifications (new prayer requests, daily prompt posted). Everything is off by default. She turns on only what she wants.</p>
+    <p><strong>My Circle:</strong> View her Circle, see member count, adjust notification preferences for the Circle specifically.</p>
+    <p><strong>Privacy:</strong> Full data export at any time. Delete account and all data. Clear explanation of what is stored locally vs. what (minimal, anonymized) is used to improve the app.</p>
+    <p><strong>Partner Access:</strong> Option to share a limited "Partner View" — not her full journal, but the weekly development notes and a simple what-she-needs-this-week prompt. He gets his own onboarding: two questions, five minutes, and he knows what to do this week.</p>
+  </div>
+</div>
+
+<!-- SECTION 12: FULL FRAMEWORK -->
+<div class="section" id="part12">
+  <div class="section-number">Part Twelve</div>
+  <h2 class="section-title">The Full App Framework — How It All Fits Together</h2>
+  <p class="section-intro">When you step back and look at Tend as a whole, the architecture is simple. Four tabs. One clear purpose for each. Everything in service of the same woman, at every stage of her journey.</p>
+
+  <h3>The Four Tabs</h3>
+
+  <div class="example">
+    <div class="example-label gold">Today 🌅 — Meet Her Where She Is</div>
+    <p><strong>Pregnancy:</strong> Daily nourishment checks · Daily prayer (changes every day) · This week's verse (changes weekly) · Daily encouragement (changes every day) · Baby note for the week · One physical action for today</p>
+    <p><strong>Postpartum:</strong> Recovery checks (rest, nourishment, pelvic floor) · Daily prayer · Baby note for this week (what he's learning, what he's doing) · Night mode for 3am opens · Adaptive content based on mood and body log</p>
+    <p><strong>The feeling:</strong> She opens it and feels held. She closes it having done one thing. She doesn't feel behind. She doesn't feel managed. She feels like something saw her this morning.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-label">Journey 📖 — Hold Her Story</div>
+    <p><strong>Pregnancy:</strong> Vertical timeline · Weekly expansion cards · Reflection prompt · Mood + body log · Milestone celebrations</p>
+    <p><strong>Postpartum:</strong> Timeline continues · Day markers → weekly → monthly · Same reflection rhythm · Her memoir builds</p>
+    <p><strong>The feeling:</strong> She scrolls back and realizes she has been writing something beautiful without knowing it. Her story, in her words, from the very beginning.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-label rose">Guide 🌿 — Wisdom When She Seeks It</div>
+    <p><strong>Always:</strong> Birth Your Way · Natural Living · Faith & Motherhood</p>
+    <p><strong>Adaptive surfacing:</strong> Articles bubble up based on her week and stage — but nothing is hidden. She can always go looking.</p>
+    <p><strong>The feeling:</strong> She comes here on a Sunday afternoon with a question, and she finds an answer that feels like it was written for her — not for a patient, for her. She bookmarks it. She sends it to her husband.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-label">Circle 🤝 — Known, Not Alone</div>
+    <p><strong>Always:</strong> 30–50 women due same month · Daily prompt · Prayer wall · Milestone celebrations</p>
+    <p><strong>Postpartum:</strong> Same Circle transitions — they walk through postpartum together</p>
+    <p><strong>The feeling:</strong> She posts a prayer request at 3am and wakes up to six women who prayed for her. She feels less alone in a way that no article and no algorithm could have produced.</p>
+  </div>
+
+  <h3>Pregnancy → Postpartum: The Transition That Changes Everything</h3>
+  <p>Every other app treats birth as an ending. Tend treats it as a threshold. The moment her birth date is entered, Tend does not reset. It remembers everything. It says: "Oliver arrived. You did it. Now begins the tenderest season." The app shifts — Today becomes about her recovery and his development simultaneously. Journey continues seamlessly. The Circle celebrates and then keeps walking with her. Guide surfaces postpartum content at exactly the right moments.</p>
+
+  <p>She never loses her history. She never downloads a new app. She never has to introduce herself again. Tend already knows her.</p>
+
+  <h3>The MVP — What to Build First</h3>
+
+  <div class="example">
+    <div class="example-label">Version 1 — Ship This</div>
+    <p><strong>Today tab:</strong> Daily prayer + encouragement (7 unique days per week × 40 weeks) · This week's verse · Daily checks · Baby note · Night mode</p>
+    <p><strong>Journey tab:</strong> Full vertical timeline · Week expansion cards · Weekly reflection prompt · Basic mood check</p>
+    <p><strong>Guide tab:</strong> 12–15 deep articles across the three sections</p>
+    <p><strong>Circle tab:</strong> Placeholder / waitlist for first cohort — "Your Circle is forming. Leave your email and we'll notify you when your group is ready."</p>
+    <p><strong>Onboarding:</strong> Full 7-screen flow as described</p>
+    <p><strong>Adaptive basics:</strong> Faith background shapes prayer language and verses. Stage shapes Today content. Night mode activates between 10pm–6am.</p>
+  </div>
+
+  <div class="example">
+    <div class="example-label rose">Version 2 — Add These</div>
+    <p>Full adaptive strategy (mood + symptom → content response) · Circle live with first cohort · Partner view · Postpartum full content library · Birth plan builder · Data export</p>
+  </div>
+
+  <div class="example">
+    <div class="example-label gold">Version 3 — The Moat</div>
+    <p>Full 40-week daily content (prayer + encouragement unique each day) · Full postpartum daily content through Year 1 · PPD check-in with clinical referral pathway · Baby milestone tracker woven into Journey · Multiple Circle cohorts · App Store launch (iOS first)</p>
+  </div>
+
+  <h3>The One Thing That Makes Tend Irreplaceable</h3>
+  <p>Every feature above could, in theory, be copied. Competitors could build a timeline. They could write prayers. They could create small group communities. What they cannot copy is the relationship she has already built with Tend by the time any competitor notices her.</p>
+
+  <p>By the time she has been in the app for eight weeks, she has written reflections Tend has held for her. She has a Circle of women she trusts. She has a timeline that already tells her story back to her. She has prayers that found her in her hardest moments. The switching cost is not inconvenience. It is loss. She would have to start over. She will not start over.</p>
+
+  <blockquote>"Tend wins not by being the best app at any given feature. It wins by being the only app that has been there from the beginning — and that will still be there at the end of the first year, when she looks back and realizes: this companion walked with me through everything."</blockquote>
+</div>
 
 <!-- CLOSING -->
 <div class="section">
